@@ -128,29 +128,10 @@ CADC_type2::CADC_type2()
  {
  }
  
- // Реализация получения отсчета для ADC1
-void CADC_type1::GetMeanSample(uint16_t &sample)
- {
-	uint16_t i;
-	uint32_t summ=0;
-	 for (i=0; i<_convertedSamples; i++)
-	  { summ += _convertedBuf[i]; }
-	 sample = summ/_convertedSamples;
- }
-// Реализация получения отсчета для ADC2
- void CADC_type2::GetMeanSample(uint16_t &sample)
- {
-	uint16_t i;
-	uint32_t summ=0;
-	 for (i=0; i<_convertedSamples; i++)
-	  { summ += _convertedBuf[i]; }
-	 sample = summ/_convertedSamples;
- }
- //-------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------
 //
 //-------------------------------------------------------------------------------------------------------
-// Объект АЦП с интерфейсом замены методов интерфейса
-//CADC_1 ADC_1, ADC_2;
  
 }//namespace
 
