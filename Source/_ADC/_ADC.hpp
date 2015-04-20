@@ -14,10 +14,10 @@ namespace src{
 // Базовый класс АЦП
 class CSingleADC{
 	protected:
-		uint16_t	_nSamples;	// Количество конвертированных данных
+		uint16_t	_convertedSamples;	// Количество конвертированных данных
 	public:
-		inline void GetSample(uint16_t n, uint16_t &sample) {sample = _convertedBuf[n];}
-//		virtual void EOC(void) =0;	// Чистая виртуальная функция, ее нужно определить в производном классе
+	  virtual void GetSample(uint16_t n, uint16_t &sample) =0;// Чистая виртуальная функция, ее нужно определить в производном классе
+ //		virtual void EOC(void) =0;	// Чистая виртуальная функция, ее нужно определить в производном классе
 		virtual void Init(void) =0;		// Чистая виртуальная функция, ее нужно определить в производном классе
 };
 
@@ -29,6 +29,7 @@ class CADC_type1 : public CSingleADC{
 		uint16_t	_convertedBuf[2];	// Буфер для конвертированных данных
 	public:
 		CADC_type1();
+		inline void GetSample(uint16_t n, uint16_t &sample) {sample = _convertedBuf[n];}
 		void Init(void);
 };
 //-------------------------------------------------------------------------------------------------------

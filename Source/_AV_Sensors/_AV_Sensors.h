@@ -2,7 +2,6 @@
 #define AV_SENSORS_HPP
 #include "stdint.h"
 
-#include "_FXP_Math.h"
 #include "_Mean_Filter.h"
 #include "_Rms_Filter.h"
 
@@ -14,37 +13,45 @@
 namespace src{	 
 
 // Базовый класс силовых датчиков
-class AvSensors{
+class AnalogSensor{
 	public:
-		AvSensors();
-		AvSensors (float ts, float tf);
-
-		inline	void GetACValue	(Iq &v);
-		inline	void GetDCValue	(Iq &v);
-//		inline	virtual void PutSample			(uint16_t adc_sample);	// virtual - В производном классе можно поменять реализацию
-//						virtual void PutCalibration	(uint16_t calibration);	// virtual - В производном классе можно поменять реализацию
+		// Конструкторы
+		AnalogSensor();
+		AnalogSensor (float ts, float tf);
+		
+		// Данные
+		MeanFilter	meanFilter;		// Фильтр Mean
+		
+		// Методы
+		inline	void GetMeanPu	(float &v);
+						void PutCalibration	(uint16_t calibration);	// Положить калибровочный коэффициент
+//						void PutTf_Ts	(float ts, float tf);					// Положить период дискретизации и постоянную времени фильтра
 	protected:
-		Iq				_ac_value;					// Переменная составляющая сигнала
-		Iq				_dc_value;					// Постоянная составляющая сигнала
-		uint16_t	_calibration_value;	// Калибровочный коэффичиент
+		float			_rms_value;					// Переменная составляющая сигнала
+		float			_mean_value;				// Постоянная составляющая сигнала
+		float			_calibration_value;	// Калибровочный коэффициент
+	
 };
 
 
 //-------------------------------------------------------------------------------------------------------------------------
 // Производный класс силовых датчиков напряжения
-// Имеет члены класса фильтров Mean и RMS в виде соответствующих объектов
+// Имеет члены класса - фильтры Mean и RMS в виде соответствующих объектов
 //-------------------------------------------------------------------------------------------------------------------------
-class Av_Rms_Sensors : public AvSensors {
+class AnalogRmsSensor : public AnalogSensor {
 	public:
-		Av_Rms_Sensors();
-		Av_Rms_Sensors(float ts, float tf);
+		// Конструкторы
+		AnalogRmsSensor();
+		AnalogRmsSensor(float ts, float tf);
 
-		inline void GetRMSValue	(Iq &v);
-
-		MeanFilter	meanFilter;		// Фильтр Mean
+		// Данные
 		RmsFilter		rmsFilter;		// Фильтр RMS
+
+		// Методы
+		inline	void GetRmsV			(float &v);
+		inline	void GetRmsPu		(float &v);
 	protected:
-		Iq	_rms_value;	// RMS значение сигнала
+		float	_rms_value;	// RMS значение сигнала
 };
 
 }

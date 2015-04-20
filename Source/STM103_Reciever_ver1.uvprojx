@@ -436,16 +436,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>FXP_Math</GroupName>
-          <Files>
-            <File>
-              <FileName>FXP_Math.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\_FXP_Math\FXP_Math.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>AV_Sensors</GroupName>
           <Files>
             <File>

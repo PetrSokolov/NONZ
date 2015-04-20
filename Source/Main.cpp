@@ -4,7 +4,6 @@
 #include "Main.hpp"
 #include "_ADC.hpp"
 #include "_UART.h"
-#include "_FXP_Math.h"
 #include "_AV_Sensors.h"
 
 
@@ -21,11 +20,8 @@ CADC_type1	ADC_1;	// АЦП1-1	20мкс
 CADC_type2	ADC_2;	// АЦП3-х
 CUART1			UART_1(32,32);
 
-Av_Rms_Sensors		I(0.00002, 0.001);//(ts, tf)
+AnalogRmsSensor		I(0.00002, 0.001);//(ts, tf)
 
-Iq a((float)0.1, 12);
-//float b=2.1, c=0.3;
-long tmp32_1,tmp32_2,tmp32_3,tmp32_4,tmp32_5;
 //---------------------------------------------------------------------------------------------------------
 // Вектора обработчиков прерываний
 //---------------------------------------------------------------------------------------------------------
@@ -99,30 +95,9 @@ void RCC_Configuration(void)
 	U1.Set_tf(0.2);
 	U2.Set_tf(0.2);*/
 
-a=_IQ12(1.5);
 /*c=_IQ(3.7);
 tim->CNT =0;
 tmp32_1 = tim->CNT;
-	a += b;
-tmp32_2 = tim->CNT;	//28 ,26
-	c *= a;
-tmp32_3 = tim->CNT;	//78, 76
-	c*=_IQ(2);
-tmp32_4 = tim->CNT;	//94, 86
-	c /= a;	// 0.61mks, float 1.66mks
-tmp32_5 = tim->CNT;	//294, 296(16:16), 42(6:10)
-
-tmp32_1 /= tmp32_2;
-tmp32_4 = tim->CNT;	//94, 86
- tmp32_3 = sqrt((float)c.val*(1<<GLOBALQ));	// 3.5mks
-tmp32_1 = tim->CNT;
- tmp32_4 = sqrt_newton(c.val<<GLOBALQ);	// mks
-tmp32_2 = tim->CNT;
-//	tmp32 = c.integer();
-	a=_IQ(123.77);
-	b=_IQ(77.12);
-//	c = a+_IQ(tmp32);
-	c = b+_IQ(50);
 */
 //---------------------------------------------------------------------------------------------------------
 //

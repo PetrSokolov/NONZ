@@ -1,51 +1,62 @@
 #include "_AV_Sensors.h"
-#include "_FXP_Math.h"
 #include "stm32f10x.h"
 
 namespace src{
 
 //------------------------------------------------------------------------------------------------------------------------ 
-// Class AvSensors
+// Class AnalogSensor
 //------------------------------------------------------------------------------------------------------------------------
 
 // Конструктор без параметров
-AvSensors::AvSensors ()
+AnalogSensor::AnalogSensor ()
  {}
  
 	 
 // Конструктор с параметрами
-AvSensors::AvSensors (float ts, float tf)
- {}
+AnalogSensor::AnalogSensor (float ts, float tf)
+{
+//	meanFilter.PutTsTf(float ts, float tf);
+}
  
+// Методы
+inline	void AnalogSensor::GetMeanPu	(float &v)
+{
+}
 
-inline void AvSensors::GetACValue	(Iq &v)
- { v=_ac_value; }
+	 
+void AnalogSensor::PutCalibration	(uint16_t calibration)	// Положить калибровочный коэффициент
+{}
 
-
-inline void AvSensors::GetDCValue	(Iq &v)
- { v=_dc_value; }
 
 //------------------------------------------------------------------------------------------------------------------------ 
-// Class Av_Rms_Sensors
+// Class AnalogRmsSensor
 //------------------------------------------------------------------------------------------------------------------------
  
 // Constructor without parameters
-Av_Rms_Sensors::Av_Rms_Sensors()
+AnalogRmsSensor::AnalogRmsSensor()
  {}
 
-	 
-// Constructor with parameters
-Av_Rms_Sensors::Av_Rms_Sensors(float ts, float tf) : AvSensors(ts, tf)
+
+// Конструктор с параметрами
+AnalogRmsSensor::AnalogRmsSensor (float ts, float tf)
 {
- meanFilter.PutTsTf	(ts, tf);
+	meanFilter.PutTsTf	(ts, tf);
+	rmsFilter.PutTsTf		(ts, tf);
+}
+
+// Методы
+inline	void AnalogRmsSensor::GetRmsV	(float &v)
+{
+	rmsFilter.GetRms(v);
+}
+
+
+inline	void AnalogRmsSensor::GetRmsPu	(float &v)
+{
+	rmsFilter.GetMean(v);
 }
 
 	 
-inline void Av_Rms_Sensors::GetRMSValue	(Iq &v)
-{
- v=_rms_value; 
-}
-
 
 }
 

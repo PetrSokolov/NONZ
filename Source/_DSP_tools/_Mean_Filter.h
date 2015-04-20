@@ -1,8 +1,7 @@
 #ifndef MEAN_FILTER_H
 #define MEAN_FILTER_H
 
-#include "_FXP_Math.h"
-
+#include "stdint.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -15,20 +14,17 @@ namespace src{
 class MeanFilter
 {
 	public:
-		inline	void PutSample		(uint32_t adc_sample);
-		inline	void GetMean		(Iq &mean);
+		inline	void PutSample	(uint16_t adc_sample);
+		inline	void GetMean		(float &mean) { mean = _mean_value; }
 						void PutTsTf		(float ts, float tf);
 	protected:
-		Iq				_iqSample;					// Отсчет сигнала
-		Iq				_iqMean_value;			// Усредненное фильтром значение сигнала
-		Iq				_iqMean_y_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
-		Iq				_iqMean_z_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
-		int32_t		_y_1;								// Компонента фильтра MEAN	(в формате целого)
-		int32_t		_z_1;								// Компонента фильтра MEAN	(в формате целого)
-		Iq				_iqTfm;							// Постоянная времени фильтра MEAN
-//		Iq				_iqTs;							// Период дискретизациии сигнала
-		Iq				_iqTmp;							// Переменная для промежуточных расчетов
-		int32_t		_tmp;								// Переменная для промежуточных расчетов
+		float				_sample;					// Отсчет сигнала
+		float				_mean_value;			// Усредненное фильтром значение сигнала
+		float				_mean_y_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
+		float				_mean_z_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
+		float				_tfm;							// Постоянная времени фильтра MEAN
+		float				_ts;							// Период дискретизациии сигнала
+		float				_tmp;							// Переменная для промежуточных расчетов
 };
 
 
