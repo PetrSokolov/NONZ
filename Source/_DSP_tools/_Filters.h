@@ -28,6 +28,14 @@ class MeanFilter
 };
 
 
+// Базовый класс Цифрового фильтра второго порядка
+class RmsFilter : public MeanFilter
+{
+	public:
+		inline	void GetRms		(float &rms) { rms = _mean_value; }
+	protected:
+};
+
 }	// namespace src
 #ifdef __cplusplus
 };

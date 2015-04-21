@@ -2,8 +2,7 @@
 #define AV_SENSORS_HPP
 #include "stdint.h"
 
-#include "_Mean_Filter.h"
-#include "_Rms_Filter.h"
+#include "_Filters.h"
 
 #ifdef __cplusplus
  extern "C" {

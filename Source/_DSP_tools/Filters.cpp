@@ -1,7 +1,7 @@
 //#include "stdint.h"
 //#include "math.h"
 
-#include "_Mean_Filter.h"
+#include "_Filters.h"
 
 using namespace src;
 
