@@ -449,14 +449,9 @@
           <GroupName>DSP_Tools</GroupName>
           <Files>
             <File>
-              <FileName>RMS_Filter.cpp</FileName>
+              <FileName>Filters.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\_DSP_tools\RMS_Filter.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Mean_Filter.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\_DSP_tools\Mean_Filter.cpp</FilePath>
+              <FilePath>.\_DSP_tools\Filters.cpp</FilePath>
             </File>
           </Files>
         </Group>

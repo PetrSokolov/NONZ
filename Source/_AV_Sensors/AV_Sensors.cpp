@@ -6,7 +6,7 @@ namespace src{
 //======================================================================================================================== 
 // Class AnalogSensor
 //======================================================================================================================== 
-
+/*
 // Конструктор без параметров
 AnalogSensor::AnalogSensor ()
  {}
@@ -26,7 +26,7 @@ void AnalogSensor::SetCalibration	(uint16_t calibration)	// Положить к�
 {
 	_calibration_value = (float)calibration;
 }
-
+*/
 
 //======================================================================================================================== 
 // Class AnalogRmsSensor
@@ -35,16 +35,14 @@ void AnalogSensor::SetCalibration	(uint16_t calibration)	// Положить к�
 // Конструктор без параметров. Устанавливаются значения по умолчанию ts = 200mks, tf = 0.1sec
 AnalogRmsSensor::AnalogRmsSensor()
  {
-	meanFilter.PutTsTf	(0.0002, 0.1);
-	rmsFilter.PutTsTf		(0.0002, 0.1);
+	PutTsTf	(0.0002, 0.1);
  }
 
 
 // Конструктор с параметрами
-AnalogRmsSensor::AnalogRmsSensor (float ts, float tf) : AnalogSensor(ts, tf)
+AnalogRmsSensor::AnalogRmsSensor (float ts, float tf)// : AnalogSensor(ts, tf)
 {
-//	meanFilter.PutTsTf	(ts, tf);
-	rmsFilter.PutTsTf		(ts, tf);
+	PutTsTf		(ts, tf);
 }
 
 

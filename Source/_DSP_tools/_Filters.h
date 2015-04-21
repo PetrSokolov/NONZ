@@ -39,13 +39,11 @@ class MeanFilter
 		inline					float	GetMean		(void);
 										void 	PutTsTf		(float ts, float tf);
 	protected:
-		float				_sample;					// Отсчет сигнала
 		float				_mean_value;			// Усредненное фильтром значение сигнала
 		float				_mean_y_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
 		float				_mean_z_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
 		float				_tfm;							// Постоянная времени фильтра MEAN
 		float				_ts;							// Период дискретизациии сигнала
-		float				_tmp;							// Переменная для промежуточных расчетов
 };
 
 
@@ -59,7 +57,8 @@ class MeanFilter
 
 class RmsFilter : public MeanFilter
 {
-	inline	void PutSample	(uint16_t adc_sample);
+	public:
+		inline	void PutSample	(uint16_t adc_sample);
 };
 
 
@@ -72,8 +71,7 @@ class RmsFilter : public MeanFilter
 //-------------------------------------------------------------------------------------------------------------------
 inline void MeanFilter::PutSample		(uint16_t adc_sample)
 {
-	_sample = adc_sample;
-	_mean_y_1 = _mean_y_1 + (_sample		- _mean_y_1)*_tfm;
+	_mean_y_1 = _mean_y_1 + ((float)adc_sample		- _mean_y_1)*_tfm;
 	_mean_z_1 = _mean_z_1 + (_mean_y_1 - _mean_z_1)*_tfm;
 	_mean_value = _mean_z_1;
 }
@@ -87,6 +85,7 @@ inline	void MeanFilter::GetMean		(float &mean)
 	mean = _mean_value;
 }
 
+
 inline	float MeanFilter::GetMean		(void)
 {
 	return _mean_value;
@@ -99,8 +98,7 @@ inline	float MeanFilter::GetMean		(void)
 //-------------------------------------------------------------------------------------------------------------------
 inline void RmsFilter::PutSample		(uint16_t adc_sample)
 {
-	_sample = adc_sample;
-	_mean_y_1 = _mean_y_1 + (_sample * _sample	- _mean_y_1)*_tfm;
+	_mean_y_1 = _mean_y_1 + ((float)adc_sample * adc_sample	- _mean_y_1)*_tfm;
 	_mean_z_1 = _mean_z_1 + (_mean_y_1 - _mean_z_1)*_tfm;
 	_mean_value = sqrt( _mean_z_1 );
 }

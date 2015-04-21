@@ -107,6 +107,7 @@ tmp32_1 = tim->CNT;
  {
 	GPIOA->BSRR = 1;
 	GPIOA->BRR = 1;
+	I.PutSample(ADC_1.GetSample());
  }
 }
 
