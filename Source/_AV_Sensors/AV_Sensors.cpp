@@ -3,9 +3,9 @@
 
 namespace src{
 
-//------------------------------------------------------------------------------------------------------------------------ 
+//======================================================================================================================== 
 // Class AnalogSensor
-//------------------------------------------------------------------------------------------------------------------------
+//======================================================================================================================== 
 
 // Конструктор без параметров
 AnalogSensor::AnalogSensor ()
@@ -15,46 +15,38 @@ AnalogSensor::AnalogSensor ()
 // Конструктор с параметрами
 AnalogSensor::AnalogSensor (float ts, float tf)
 {
-//	meanFilter.PutTsTf(float ts, float tf);
+	meanFilter.PutTsTf(ts, tf);
 }
  
-// Методы
-inline	void AnalogSensor::GetMeanPu	(float &v)
-{
-}
-
-	 
-void AnalogSensor::PutCalibration	(uint16_t calibration)	// Положить калибровочный коэффициент
-{}
-
-
 //------------------------------------------------------------------------------------------------------------------------ 
+// Методы
+//------------------------------------------------------------------------------------------------------------------------ 
+	 
+void AnalogSensor::SetCalibration	(uint16_t calibration)	// Положить калибровочный коэффициент
+{
+	_calibration_value = (float)calibration;
+}
+
+
+//======================================================================================================================== 
 // Class AnalogRmsSensor
-//------------------------------------------------------------------------------------------------------------------------
+//======================================================================================================================== 
  
-// Constructor without parameters
+// Конструктор без параметров. Устанавливаются значения по умолчанию ts = 200mks, tf = 0.1sec
 AnalogRmsSensor::AnalogRmsSensor()
- {}
+ {
+	meanFilter.PutTsTf	(0.0002, 0.1);
+	rmsFilter.PutTsTf		(0.0002, 0.1);
+ }
 
 
 // Конструктор с параметрами
-AnalogRmsSensor::AnalogRmsSensor (float ts, float tf)
+AnalogRmsSensor::AnalogRmsSensor (float ts, float tf) : AnalogSensor(ts, tf)
 {
-	meanFilter.PutTsTf	(ts, tf);
+//	meanFilter.PutTsTf	(ts, tf);
 	rmsFilter.PutTsTf		(ts, tf);
 }
 
-// Методы
-inline	void AnalogRmsSensor::GetRmsV	(float &v)
-{
-	rmsFilter.GetRms(v);
-}
-
-
-inline	void AnalogRmsSensor::GetRmsPu	(float &v)
-{
-	rmsFilter.GetMean(v);
-}
 
 	 
 
