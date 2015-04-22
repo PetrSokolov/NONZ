@@ -4,7 +4,7 @@
 #include "Main.hpp"
 #include "_ADC.hpp"
 #include "_UART.h"
-#include "_AV_Sensors.h"
+#include "_AnalogSensors.h"
 
 
 
@@ -16,11 +16,13 @@ uint8_t UART_TxBuffer[256];
 //---------------------------------------------------------------------------------------------------------
 using namespace src;
 
-CADC_type1	ADC_1;	// АЦП1-1	20мкс
-CADC_type2	ADC_2;	// АЦП3-х
+Adc_1	adc_1;	// АЦП1-1	20мкс
+Adc_3	adc_3;	// АЦП3-х
 CUART1			UART_1(32,32);
 
-AnalogRmsSensor		I(0.00002, 0.001);//(ts, tf)
+AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
+AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
+AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
 
 //---------------------------------------------------------------------------------------------------------
 // Вектора обработчиков прерываний
@@ -81,24 +83,18 @@ void RCC_Configuration(void)
   GPIO_Configuration();
 //TIM_TypeDef *tim;
 //	tim = TIM4;
+
 //---------------------------------------------------------------------------------------------------------
 // Инициализация объектов
 //---------------------------------------------------------------------------------------------------------
-	ADC_1.Init();
-	ADC_2.Init();
+	adc_1.Init();
+	adc_3.Init();
 	UART_1.Init();
-//	I.PutSample((long)a.val);
-/*	I.Set_ts(0.00002);
-	U1.Set_ts(0.00006);
-	U2.Set_ts(0.00006);
-	I.Set_tf(0.2);
-	U1.Set_tf(0.2);
-	U2.Set_tf(0.2);*/
+	
+	current.SetCalibration(123);
+	voltage.SetCalibration(210);
+	voltageRms.SetCalibration(321);
 
-/*c=_IQ(3.7);
-tim->CNT =0;
-tmp32_1 = tim->CNT;
-*/
 //---------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------
@@ -107,7 +103,9 @@ tmp32_1 = tim->CNT;
  {
 	GPIOA->BSRR = 1;
 	GPIOA->BRR = 1;
-	I.PutSample(ADC_1.GetSample());
+	current.PutSample(adc_1.GetSample());
+	voltage.PutSample(adc_1.GetSample());
+	voltageRms.PutSample(adc_1.GetSample());
  }
 }
 

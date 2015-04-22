@@ -266,7 +266,7 @@
 
   <Group>
     <GroupName>ADC</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -274,7 +274,7 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>2</FileNumber>
       <FileType>8</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
@@ -307,7 +307,7 @@
   </Group>
 
   <Group>
-    <GroupName>AV_Sensors</GroupName>
+    <GroupName>AnalogSensors</GroupName>
     <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -320,8 +320,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\_AV_Sensors\AV_Sensors.cpp</PathWithFileName>
-      <FilenameWithoutPath>AV_Sensors.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\_AnalogSensors\AnalogSensors.cpp</PathWithFileName>
+      <FilenameWithoutPath>AnalogSensors.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -329,7 +329,7 @@
 
   <Group>
     <GroupName>DSP_Tools</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

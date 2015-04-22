@@ -19,16 +19,20 @@ Time(mks)	|0		|20		|40		|60		|80		|100	|120	|140	|160	|180	|200
 namespace src{
 
 // Конструктор класса ADC1
-CADC_type1::CADC_type1()
+Adc_1::Adc_1()
  {
  }
 // Конструктор класса ADC2
-CADC_type2::CADC_type2()
+Adc_3::Adc_3()
  {
  }
 
-// Реализация инициализации АЦП1
- void CADC_type1::Init(void)
+ // Реализация настройки АЦП1 для НО/НЗ
+ // Преобразование запускается от TIM4:CC4, с периодом 20мкс
+ // DMA1:ch1 переносит результат в буфер _convertedBuf, который зациклен размером буфера
+ // 
+
+ void Adc_1::Init(void)
  {
 	// Clock config
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
@@ -123,9 +127,12 @@ CADC_type2::CADC_type2()
 	TIM_Cmd(TIM4, ENABLE);
  }
 
- // Реализация инициализации АЦП2
- void CADC_type2::Init(void)
- {
+ // Реализация настройки АЦП3 для НО/НЗ
+ // Преобразование запускается от TIM5:CC3, с периодом 60мкс
+ // EOC - прерывание 60mks. В нем обрабатывается отсчет ADC3 и отсчеты ADC1
+ // 
+ void Adc_3::Init(void)
+ {	 
  }
 
  

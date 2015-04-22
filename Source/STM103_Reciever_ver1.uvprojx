@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\_ADC;.\_AV_Sensors;.\_DSP_tools;.\_FXP_Math;.\_UART</IncludePath>
+              <IncludePath>.\_ADC;.\_AnalogSensors;.\_DSP_tools;.\_FXP_Math;.\_UART</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -436,12 +436,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>AV_Sensors</GroupName>
+          <GroupName>AnalogSensors</GroupName>
           <Files>
             <File>
-              <FileName>AV_Sensors.cpp</FileName>
+              <FileName>AnalogSensors.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\_AV_Sensors\AV_Sensors.cpp</FilePath>
+              <FilePath>.\_AnalogSensors\AnalogSensors.cpp</FilePath>
             </File>
           </Files>
         </Group>

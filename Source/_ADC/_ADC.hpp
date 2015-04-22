@@ -12,7 +12,7 @@ namespace src{
 #define countof(a)   (sizeof(a) / sizeof(*(a)))	
 
 // Базовый класс АЦП
-class CSingleADC{
+class BaseAdc{
 	protected:
 		uint16_t	_convertedSamples;	// Количество конвертированных данных
 	public:
@@ -23,25 +23,25 @@ class CSingleADC{
 };
 
 //-------------------------------------------------------------------------------------------------------
-// Производный класс АЦП1(интерфейс).
+// Производный класс АЦП1
 //-------------------------------------------------------------------------------------------------------
-class CADC_type1 : public CSingleADC{
+class Adc_1 : public BaseAdc{
 	protected:
 		uint16_t	_convertedBuf[2];	// Буфер для конвертированных данных
 	public:
-		CADC_type1();
+		Adc_1();
 		inline void			GetSample(uint16_t n, uint16_t &sample) {sample = _convertedBuf[n];}
 		inline uint16_t	GetSample() {return _convertedBuf[0];}
 		void Init(void);
 };
 //-------------------------------------------------------------------------------------------------------
-// Производный класс АЦП2(интерфейс).
+// Производный класс АЦП2
 //-------------------------------------------------------------------------------------------------------
-class CADC_type2 : public CSingleADC{
+class Adc_3 : public BaseAdc{
 	protected:
 		uint16_t	_convertedBuf[3];	// Буфер для конвертированных данных
 	public:
-		CADC_type2();
+		Adc_3();
 		inline void GetSample(uint16_t n, uint16_t &sample)	{sample = _convertedBuf[n];}
 		inline uint16_t	GetSample()													{return _convertedBuf[0];}
 		void Init(void);
