@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\_ADC;.\_AnalogSensors;.\_DSP_tools;.\_FXP_Math;.\_UART</IncludePath>
+              <IncludePath>.\_ADC;.\_AnalogSensors;.\_DSP_tools;.\_FXP_Math;.\_UART;C:\Keil_v5\ARM\ARMCC\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -452,6 +452,16 @@
               <FileName>Filters.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\_DSP_tools\Filters.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Menu Items</GroupName>
+          <Files>
+            <File>
+              <FileName>Engine.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Menu_Items\Engine.cpp</FilePath>
             </File>
           </Files>
         </Group>
