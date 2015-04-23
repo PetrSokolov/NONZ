@@ -5,6 +5,7 @@
 #include "_ADC.hpp"
 #include "_UART.h"
 #include "_AnalogSensors.h"
+#include "_PWM.h"
 #include <vector>
 
 
@@ -18,9 +19,10 @@ uint8_t UART_TxBuffer[256];
 using namespace src;
 using namespace std;
 
-Adc_1	adc_1;	// АЦП1-1	20мкс
-Adc_3	adc_3;	// АЦП3-х
-CUART1			UART_1(32,32);
+Adc_1					adc_1;	// АЦП1-1	20мкс
+Adc_3					adc_3;	// АЦП3-х
+CUART1				UART_1(32,32);
+Pwm2phaseNONZ	pwm;
 
 AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
@@ -84,6 +86,10 @@ vector<int> v;
 
  int main ()
 {
+// Переинициализация множителя
+//  system_stm32f10x.c(124)		#define HSE_VALUE    ((uint32_t)12000000) - вернуть на 8МГц, если потребуется
+//	system_stm32f10x.c(1056)	RCC_CFGR_PLLMULL6 Заменил множитель с 9 на 6. Из за кварца 12МГц вместо 8Мгц
+	
   GPIO_Configuration();
 //TIM_TypeDef *tim;
 //	tim = TIM4;
@@ -94,6 +100,7 @@ vector<int> v;
 	adc_1.Init();
 	adc_3.Init();
 	UART_1.Init();
+	pwm.Init();
 	
 	current.SetCalibration(123);
 	voltage.SetCalibration(210);
@@ -104,8 +111,8 @@ vector<int> v;
 //---------------------------------------------------------------------------------------------------------
 
 	v.push_back((int)1);
-//	v.push_back(2);
-//	v.push_back(3);
+	v.push_back(2);
+	v.push_back(3);
 	
 	while (1)
  {
