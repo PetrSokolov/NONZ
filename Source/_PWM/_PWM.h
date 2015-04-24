@@ -12,6 +12,7 @@
 #define PWM_H
 
 #include "stdint.h"
+//#include "stm32f10x.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -32,25 +33,31 @@ namespace src{
 class Pwm{
 	public:
 						void setFrequency (float frequency);
-						void setDeathTime (float deathtime);
 						void setValue 		(float value);
 						void setBlock 		(float block);
-		virtual	void Init			 		(void) =0;
+		virtual	void init			 		(void) =0;
 		
 	protected:
-		uint16_t	_deathTime;			//	Мертвое время ШИМ. deathtime
+		uint16_t computeDeathTime (float deathTime);
+
+		uint16_t	_deathTime;			//	Мертвое время ШИМ [мкс]. deathtime
 		uint16_t	_frequency;			//	Частота модуляции ШИМ
 		float 		_value;					//	Амплитуда
 		uint16_t	_block;					//	Блокировка. Отключение ШИМ
 		uint16_t	_timerPeriod;		//	Период таймера(ШИМ) [в отсчетах таймера]
 
-		float 		_dutyCycle1;		//	Скважность канала 1 (текущая)
-		float 		_dutyCycle2;		//	Скважность канала 2 (текущая)
-		float 		_dutyCycle3;		//	Скважность канала 3 (текущая)
-		uint16_t	_channel1Pulse;	//	Значение регистра сравнения CH1
-		uint16_t	_channel2Pulse;	//	Значение регистра сравнения CH2
-		uint16_t	_channel3Pulse;	//	Значение регистра сравнения CH3
-		uint32_t	_clkFrequency;	//	Частота синхронизации таймера [Гц]. Расчитывается при инициализации.
+							float 				_dutyCycle1;			//	Скважность канала 1 (текущая)
+							float 				_dutyCycle2;			//	Скважность канала 2 (текущая)
+							float 				_dutyCycle3;			//	Скважность канала 3 (текущая)
+							uint16_t			_channel1Pulse;		//	Значение регистра сравнения CH1
+							uint16_t			_channel2Pulse;		//	Значение регистра сравнения CH2
+							uint16_t			_channel3Pulse;		//	Значение регистра сравнения CH3
+							uint32_t			_clkTimer;				//	Частота синхронизации таймера 		[Гц]. Расчитывается при инициализации.
+							uint32_t			_clkDeathTime;		//	Частота синхронизации death time	[Гц]. Расчитывается при инициализации.
+//		volatile	uint16_t*			_deathTimeReg;		//	Указатель на регистр настройки death time
+//		volatile	uint16_t*			_timerEnableReg;	//	Указатель на регистр включения таймера
+//							uint16_t			_timerEnableMask;	//	Указатель на регистр включения таймера
+//							TIM_TypeDef*	_tim;						//	Указатель на таймер TIMx
 };
 
 
@@ -63,7 +70,7 @@ class Pwm{
 
 class Pwm2phaseNONZ : public Pwm{
 	public:
-		void Init	(void);
+		void init	(void);
 };
 
 }	// namespace src

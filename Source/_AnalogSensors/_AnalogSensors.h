@@ -13,7 +13,7 @@
 #define AV_SENSORS_HPP
 #include "stdint.h"
 
-#include "_Filters.h"
+#include "..\_DSP_tools\_Filters.h"
 
 #ifdef __cplusplus
  extern "C" {

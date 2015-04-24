@@ -2,10 +2,10 @@
 //#include "stm32_eval.h"
 #include "stm32f10x_usart.h"
 #include "Main.hpp"
-#include "_ADC.hpp"
-#include "_UART.h"
-#include "_AnalogSensors.h"
-#include "_PWM.h"
+#include ".\_ADC\_ADC.hpp"
+#include ".\_UART\_UART.h"
+#include ".\_AnalogSensors\_AnalogSensors.h"
+#include "_PWM\_PWM.h"
 #include <vector>
 
 
@@ -27,6 +27,8 @@ Pwm2phaseNONZ	pwm;
 AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
 AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
+
+vector<int> v;
 
 //---------------------------------------------------------------------------------------------------------
 // Вектора обработчиков прерываний
@@ -82,7 +84,6 @@ void RCC_Configuration(void)
 //---------------------------------------------------------------------------------------------------------
 // MAIN PROGRAM
 //---------------------------------------------------------------------------------------------------------
-vector<int> v;
 
  int main ()
 {
@@ -100,7 +101,7 @@ vector<int> v;
 	adc_1.Init();
 	adc_3.Init();
 	UART_1.Init();
-	pwm.Init();
+	pwm.init();
 	
 	current.SetCalibration(123);
 	voltage.SetCalibration(210);
