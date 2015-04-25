@@ -114,6 +114,10 @@ void RCC_Configuration(void)
 	v.push_back((int)1);
 	v.push_back(2);
 	v.push_back(3);
+  
+  pwm.setValue (0.2);
+  pwm.setValue (0.4);
+  pwm.setValue (0.6);
 	
 	while (1)
  {

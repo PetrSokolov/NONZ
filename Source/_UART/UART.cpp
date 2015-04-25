@@ -1,4 +1,5 @@
 #include "_UART.h"
+//#include "..\_PWM\_PWM.h"
 #include "stm32f10x.h"
 
 
@@ -115,6 +116,8 @@ namespace src{
 		{ DMA_Cmd(DMA1_Channel4, DISABLE);
 			DMA1_Channel4->CNDTR = 2; 
 			DMA_Cmd(DMA1_Channel4, ENABLE);
+      // Нельзя вставлять код после включения DMA. Иначе успеет произойти следующее прерывание
+      // флаг сбросится при выходе из первого, а CNDTR не установится -> прерываний больше не будет
 		}	
 	 }
 

@@ -476,7 +476,12 @@
             <File>
               <FileName>PWM.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\PWM.cpp</FilePath>
+              <FilePath>.\_PWM\PWM.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PWM_User.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\_PWM\PWM_User.cpp</FilePath>
             </File>
           </Files>
         </Group>

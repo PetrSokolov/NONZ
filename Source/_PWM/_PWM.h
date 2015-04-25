@@ -1,6 +1,6 @@
 //#####################################################################################
 //	Файл				PWM.h
-//	Название:		Движок меню. На базе автомата состояний.
+//	Название:		ШИМ для НО/НЗ.
 //	Автор:			Бабкин.П.А
 //	Вер. | гггг-ммм-дд |     	Кто		 		| Описание изменений
 //	=====|=============|================|==============================================
@@ -24,40 +24,41 @@ namespace src{
 // Pwm - генератор 3 фазного ШИМ
 //======================================================================================================================== 
 //	Методы:
-//	setFrequency	- Установить частоту модуляции ШИМ
-//	setDeathTime	- Установить мертвое время ШИМ
-//	setValue			- Установить амплитуду сигнала (1-максамальный)
-//	setBlock			- Установить/снять режим блокировки
-//	init					- Инициализация. Имеет несколько реализаций под разное железо
+//	setFrequency			- Установить частоту модуляции ШИМ
+//	setValue					- Установить амплитуду сигнала (1-максамальный)
+//	setBlock					- Установить/снять режим блокировки
+//	computeDeathTime	- Установить мертвое время ШИМ. Имеет несколько реализаций под разное железо
+//	init							- Инициализация. Имеет несколько реализаций под разное железо
 	
 class Pwm{
-	public:
-						void setFrequency (float frequency);
-						void setValue 		(float value);
-						void setBlock 		(float block);
-		virtual	void init			 		(void) =0;
+  public:
+            void setFrequency (float frequency);
+            void setBlock 		(float block);
+    virtual	void setValue 		(float value) =0;
+    virtual	void init			 		(void) = 0;
 		
-	protected:
-		uint16_t computeDeathTime (float deathTime);
+  protected:
+    virtual	uint16_t computeDeathTime (float deathTime) = 0;
 
-		uint16_t	_deathTime;			//	Мертвое время ШИМ [мкс]. deathtime
-		uint16_t	_frequency;			//	Частота модуляции ШИМ
-		float 		_value;					//	Амплитуда
-		uint16_t	_block;					//	Блокировка. Отключение ШИМ
-		uint16_t	_timerPeriod;		//	Период таймера(ШИМ) [в отсчетах таймера]
+                uint16_t  _frequency;     //  Частота модуляции ШИМ
+                float     _value;         //  Амплитуда
+                uint16_t  _block;         //  Блокировка. Отключение ШИМ
+                uint16_t  _timerPeriod;   //  Период таймера(ШИМ) [в отсчетах таймера]
 
-							float 				_dutyCycle1;			//	Скважность канала 1 (текущая)
-							float 				_dutyCycle2;			//	Скважность канала 2 (текущая)
-							float 				_dutyCycle3;			//	Скважность канала 3 (текущая)
-							uint16_t			_channel1Pulse;		//	Значение регистра сравнения CH1
-							uint16_t			_channel2Pulse;		//	Значение регистра сравнения CH2
-							uint16_t			_channel3Pulse;		//	Значение регистра сравнения CH3
-							uint32_t			_clkTimer;				//	Частота синхронизации таймера 		[Гц]. Расчитывается при инициализации.
-							uint32_t			_clkDeathTime;		//	Частота синхронизации death time	[Гц]. Расчитывается при инициализации.
-//		volatile	uint16_t*			_deathTimeReg;		//	Указатель на регистр настройки death time
-//		volatile	uint16_t*			_timerEnableReg;	//	Указатель на регистр включения таймера
-//							uint16_t			_timerEnableMask;	//	Указатель на регистр включения таймера
-//							TIM_TypeDef*	_tim;						//	Указатель на таймер TIMx
+                uint32_t  _clkTimer;      //  Частота синхронизации таймера 		[Гц]. Расчитывается при инициализации.
+                uint32_t  _clkDeathTime;  //  Частота синхронизации death time	[Гц]. Расчитывается при инициализации.
+                float     _dutyCycle1;    //  Скважность канала 1 (текущая)
+                float     _dutyCycle2;    //  Скважность канала 2 (текущая)
+                float     _dutyCycle3;    //  Скважность канала 3 (текущая)
+                uint16_t  _channel1Pulse; //  Значение регистра сравнения CH1
+                uint16_t  _channel2Pulse; //  Значение регистра сравнения CH2
+                uint16_t  _channel3Pulse; //  Значение регистра сравнения CH3
+      volatile  uint16_t* _compare1;      //  Указатель на регистр сравнения CH1 (У регистров идентификатор volatile, т.к. они изменяются аппаратно, чтоб оптимизатор не порезал )
+      volatile  uint16_t* _compare2;      //  Указатель на регистр сравнения CH2
+      volatile  uint16_t* _compare3;      //  Указатель на регистр сравнения CH3
+
+  // Указатели на настроечные параметры
+                uint16_t* _deathTime;     //  Указатель на настроечный параметр death time[мкс]
 };
 
 
@@ -70,7 +71,10 @@ class Pwm{
 
 class Pwm2phaseNONZ : public Pwm{
 	public:
-		void init	(void);
+    void setValue	(float value);
+		void init	    (void);
+	private:
+		uint16_t computeDeathTime (float deathTime);
 };
 
 }	// namespace src
