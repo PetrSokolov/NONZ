@@ -6,12 +6,14 @@
 #include ".\_UART\_UART.h"
 #include ".\_AnalogSensors\_AnalogSensors.h"
 #include "_PWM\_PWM.h"
+#include ".\Menu_Items\_Parameters.h"
+#include ".\Menu_Items\__Parameters_User.h"
 #include <vector>
+#include <string>
 
 
 
 //#define countof(a)   (sizeof(a) / sizeof(*(a)))
-uint8_t UART_TxBuffer[256];
 
 //---------------------------------------------------------------------------------------------------------
 // Создание объектов
@@ -28,8 +30,37 @@ AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
 AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
 
-vector<int> v;
+vector<Parameter> v;
+string str1 ("First string");
+string str2 ("Second string");
+string str3;
 
+int tmp1, tmp2;
+
+/*namespace src{
+Parameter* parameterPointer;
+      Parameter par1( 1,    // _id        // Идентификатор параметра. Для привязки к FRAM
+                      1,    // _menu      // Идентификатор меню.
+                      256,  // _modbusAdr	// Адрес модбас
+                      "Элемент меню 1", //_text      // Тестовая информация
+                      123,  // _value     // Значение параметра
+                      1,    // _rw        // Разрешение на запись
+                      0,    // _min       // Минимальное значение
+                      100,  // _max       // Максимальное значение
+                      1,    // _user      // Доступ в режиме пользователя
+                      12),  // _def       // Значение по умолчанию
+                par2( 2,    // _id        // Идентификатор параметра. Для привязки к FRAM
+                      2,    // _menu      // Идентификатор меню.
+                      257,  // _modbusAdr	// Адрес модбас
+                      "Элемент меню 2", //_text      // Тестовая информация
+                      321,  // _value     // Значение параметра
+                      1,    // _rw        // Разрешение на запись
+                      0,    // _min       // Минимальное значение
+                      100,  // _max       // Максимальное значение
+                      1,    // _user      // Доступ в режиме пользователя
+                      21);  // _def       // Значение по умолчанию
+}
+*/
 //---------------------------------------------------------------------------------------------------------
 // Вектора обработчиков прерываний
 //---------------------------------------------------------------------------------------------------------
@@ -92,8 +123,8 @@ void RCC_Configuration(void)
 //	system_stm32f10x.c(1056)	RCC_CFGR_PLLMULL6 Заменил множитель с 9 на 6. Из за кварца 12МГц вместо 8Мгц
 	
   GPIO_Configuration();
-//TIM_TypeDef *tim;
-//	tim = TIM4;
+TIM_TypeDef *tim;
+	tim = TIM4;
 
 //---------------------------------------------------------------------------------------------------------
 // Инициализация объектов
@@ -110,14 +141,20 @@ void RCC_Configuration(void)
 //---------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------
-
-	v.push_back((int)1);
-	v.push_back(2);
-	v.push_back(3);
+//parameterPointer = &par1;
+//	v.push_back(parameterPointer->_value);
+//	v.push_back(par2._value);
+	v.push_back(par1);
   
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);
+  tim->CNT=0;
+//  tmp1 = tim->CNT;
+  str3 = str1+str2; // 16mks
+  tmp2 = tim->CNT;
+  str3 = str1+ " " + str2;
+  
 	
 	while (1)
  {

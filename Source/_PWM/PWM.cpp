@@ -14,6 +14,8 @@
 
 
 
+
+
 using namespace src;
 
 //======================================================================================================================== 
@@ -44,7 +46,8 @@ uint16_t Pwm::computeDeathTime (float deathTime)
 
 void Pwm::setValue (float value)
 {
-
+//  src::par1._value = value;
+//  src::par2._value = value;
 }
 
 
