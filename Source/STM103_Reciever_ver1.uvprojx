@@ -468,6 +468,16 @@
               <FileType>8</FileType>
               <FilePath>.\Menu_Items\Engine.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Parameters_User.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Menu_Items\Parameters_User.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Parameters.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Menu_Items\Parameters.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

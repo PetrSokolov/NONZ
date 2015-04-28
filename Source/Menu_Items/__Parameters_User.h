@@ -22,6 +22,7 @@
 using namespace src;
 
 extern Parameter par1, par2;
+extern MapsOfParameters mapsOfParameters;
    
 // }	// namespace src
 

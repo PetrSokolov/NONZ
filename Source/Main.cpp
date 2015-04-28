@@ -1,5 +1,4 @@
 #include "stm32f10x_gpio.h"
-//#include "stm32_eval.h"
 #include "stm32f10x_usart.h"
 #include "Main.hpp"
 #include ".\_ADC\_ADC.hpp"
@@ -9,6 +8,7 @@
 #include ".\Menu_Items\_Parameters.h"
 #include ".\Menu_Items\__Parameters_User.h"
 #include <vector>
+#include <map>
 #include <string>
 
 
@@ -30,37 +30,13 @@ AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
 AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
 
-vector<Parameter> v;
 string str1 ("First string");
 string str2 ("Second string");
 string str3;
 
 int tmp1, tmp2;
 
-/*namespace src{
-Parameter* parameterPointer;
-      Parameter par1( 1,    // _id        // Идентификатор параметра. Для привязки к FRAM
-                      1,    // _menu      // Идентификатор меню.
-                      256,  // _modbusAdr	// Адрес модбас
-                      "Элемент меню 1", //_text      // Тестовая информация
-                      123,  // _value     // Значение параметра
-                      1,    // _rw        // Разрешение на запись
-                      0,    // _min       // Минимальное значение
-                      100,  // _max       // Максимальное значение
-                      1,    // _user      // Доступ в режиме пользователя
-                      12),  // _def       // Значение по умолчанию
-                par2( 2,    // _id        // Идентификатор параметра. Для привязки к FRAM
-                      2,    // _menu      // Идентификатор меню.
-                      257,  // _modbusAdr	// Адрес модбас
-                      "Элемент меню 2", //_text      // Тестовая информация
-                      321,  // _value     // Значение параметра
-                      1,    // _rw        // Разрешение на запись
-                      0,    // _min       // Минимальное значение
-                      100,  // _max       // Максимальное значение
-                      1,    // _user      // Доступ в режиме пользователя
-                      21);  // _def       // Значение по умолчанию
-}
-*/
+
 //---------------------------------------------------------------------------------------------------------
 // Вектора обработчиков прерываний
 //---------------------------------------------------------------------------------------------------------
@@ -118,18 +94,19 @@ void RCC_Configuration(void)
 
  int main ()
 {
-// Переинициализация множителя
+// Переинициализация множителя. Не стирать. Для информации.
 //  system_stm32f10x.c(124)		#define HSE_VALUE    ((uint32_t)12000000) - вернуть на 8МГц, если потребуется
 //	system_stm32f10x.c(1056)	RCC_CFGR_PLLMULL6 Заменил множитель с 9 на 6. Из за кварца 12МГц вместо 8Мгц
 	
   GPIO_Configuration();
-TIM_TypeDef *tim;
-	tim = TIM4;
+//TIM_TypeDef *tim;
+//	tim = TIM4;
 
 //---------------------------------------------------------------------------------------------------------
 // Инициализация объектов
 //---------------------------------------------------------------------------------------------------------
-	adc_1.Init();
+	mapsOfParameters.Init();
+  adc_1.Init();
 	adc_3.Init();
 	UART_1.Init();
 	pwm.init();
@@ -141,19 +118,35 @@ TIM_TypeDef *tim;
 //---------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------
-//parameterPointer = &par1;
-//	v.push_back(parameterPointer->_value);
-//	v.push_back(par2._value);
-	v.push_back(par1);
-  
+/*  
+Parameter* parameterPointer;
+  map<uint16_t, Parameter*>::iterator i;
+  i = mapsOfParameters.idMap.begin();
+  tmp1 = (*i).first;
+   parameterPointer = (*i).second;
+  tmp2 = parameterPointer->_value.xy;
+
+  i++;
+
+  tmp1 = (*i).first;
+   parameterPointer = (*i).second;
+  tmp2 = parameterPointer->_value.xy;
+//  
+  i = mapsOfParameters.mbMap.begin();
+  tmp1 = (*i).first;
+   parameterPointer = (*i).second;
+  tmp2 = parameterPointer->_value.xy;
+
+  i++;
+
+  tmp1 = (*i).first;
+   parameterPointer = (*i).second;
+  tmp2 = parameterPointer->_value.xy;
+*/
+
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);
-  tim->CNT=0;
-//  tmp1 = tim->CNT;
-  str3 = str1+str2; // 16mks
-  tmp2 = tim->CNT;
-  str3 = str1+ " " + str2;
   
 	
 	while (1)
