@@ -26,17 +26,17 @@ namespace src{
 // Mean - Фильтр второго порядка
 //======================================================================================================================== 
 //	Методы:
-//	PutSample - Положить в фильтр отсчет АЦП и обработать. Аргумент adc_sample - значение АЦП. Выполняется каждый период дискретизации
-//	GetMean		- Получить значение на выходе фильтра. Аргументу mean присваивается значение. Либо возвращается, если нет аргумена.
-//	PutTsTf		- Установить период дискретизации (ts) и постоянную времени фильтра (tf). ts и tf задаются в секундах (0.0002 сек и тп)
+//	putSample - Положить в фильтр отсчет АЦП и обработать. Аргумент adc_sample - значение АЦП. Выполняется каждый период дискретизации
+//	getMean		- Получить значение на выходе фильтра. Аргументу mean присваивается значение. Либо возвращается, если нет аргумена.
+//	putTsTf		- Установить период дискретизации (ts) и постоянную времени фильтра (tf). ts и tf задаются в секундах (0.0002 сек и тп)
 	
 class MeanFilter
 {
 	public:
-		inline	virtual void 	PutSample	(uint16_t adc_sample);
-		inline					void 	GetMean		(float &mean);
-		inline					float	GetMean		(void);
-										void 	PutTsTf		(float ts, float tf);
+		inline	virtual void 	putSample	(uint16_t adc_sample);
+		inline					void 	getMean		(float &mean);
+		inline					float	getMean		(void);
+										void 	putTsTf		(float ts, float tf);
 	protected:
 		float				_mean_value;			// Усредненное фильтром значение сигнала
 		float				_mean_y_1;				// Компонента фильтра MEAN	(в формате фиксированной точки)
@@ -57,7 +57,7 @@ class MeanFilter
 class RmsFilter : public MeanFilter
 {
 	public:
-		inline	void PutSample	(uint16_t adc_sample);
+		virtual inline	void putSample	(uint16_t adc_sample);
 };
 
 
@@ -68,7 +68,7 @@ class RmsFilter : public MeanFilter
 //-------------------------------------------------------------------------------------------------------------------
 //	PutSample - Положить в фильтр отсчет АЦП и обработать. Аргумент adc_sample - значение АЦП. Выполняется каждый период дискретизации
 //-------------------------------------------------------------------------------------------------------------------
-inline void MeanFilter::PutSample		(uint16_t adc_sample)
+inline void MeanFilter::putSample		(uint16_t adc_sample)
 {
 	_mean_y_1 = _mean_y_1 + ((float)adc_sample		- _mean_y_1)*_tfm;
 	_mean_z_1 = _mean_z_1 + (_mean_y_1 - _mean_z_1)*_tfm;
@@ -79,13 +79,13 @@ inline void MeanFilter::PutSample		(uint16_t adc_sample)
 //-------------------------------------------------------------------------------------------------------------------
 //	GetMean		- Получить значение на выходе фильтра. Аргументу mean присваивается значение.
 //-------------------------------------------------------------------------------------------------------------------
-inline	void MeanFilter::GetMean		(float &mean)
+inline	void MeanFilter::getMean		(float &mean)
 {
 	mean = _mean_value;
 }
 
 
-inline	float MeanFilter::GetMean		(void)
+inline	float MeanFilter::getMean		(void)
 {
 	return _mean_value;
 }
@@ -95,7 +95,7 @@ inline	float MeanFilter::GetMean		(void)
 //-------------------------------------------------------------------------------------------------------------------
 //	PutSample - Положить в фильтр отсчет АЦП и обработать. Аргумент adc_sample - значение АЦП. Выполняется каждый период дискретизации
 //-------------------------------------------------------------------------------------------------------------------
-inline void RmsFilter::PutSample		(uint16_t adc_sample)
+inline void RmsFilter::putSample		(uint16_t adc_sample)
 {
 	_mean_y_1 = _mean_y_1 + ((float)adc_sample * adc_sample	- _mean_y_1)*_tfm;
 	_mean_z_1 = _mean_z_1 + (_mean_y_1 - _mean_z_1)*_tfm;

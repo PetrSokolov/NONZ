@@ -12,6 +12,7 @@
 #define PARAMETERS_H
 
 #include "stdint.h"
+#include "math.h"
 #include <map>
 
 
@@ -19,43 +20,36 @@
  extern "C" {
 #endif 
 
-using namespace std;
+#define BYTES_TO_LONG(st,ml) (((uint32_t)st<<16)|(ml&0xFFFF))
    
+using namespace std;
+
+
 namespace src{	 
 
+  // Список типов параметров
+enum {
+  TYPE_SINGLE_REGISTER,
+  TYPE_DOUBLE_REGISTER,
+  TYPE_FLOAT
+};
+  
 //=================================================================================================
-//  Класс, определяющий настроечный параметр
+//  Класс, определяющий настроечный параметр из 1 регистра.  (size = 0 - 16 бит)
 //=================================================================================================
  
 // Класс настроечного параметра. В ПЗУ хранится только текст (const char*)
 class Parameter{
   public:
     // Конструктор без параметров
-    Parameter()
-                    { 
-                      _id          = 0;
-                      _menu        = 0;
-                      _text        = 0;
-                      _modbusAdr   = 0;
-                      _modbusAdr2  = 0;
-                      _min         = 0;
-                      _max         = 0;
-                      _def         = 0;
-
-                      _flags.rw    = 0;
-                      _flags.size  = 0;
-                      _flags.user  = 0;
-                      _value.xy    = 0;
-                    }
+    Parameter() { }
   
     // Конструктор с параметрами
     Parameter(  uint16_t   id,
                 uint32_t   menu,
                 char*      text,
                 uint16_t   modbusAdr,
-                uint16_t   modbusAdr2,
                 uint16_t   value,
-                uint16_t   size,
                 uint16_t   rw,
                 uint16_t   min,
                 uint16_t   max,
@@ -67,39 +61,61 @@ class Parameter{
                       _menu        = menu;
                       _text        = text;
                       _modbusAdr   = modbusAdr;
-                      _modbusAdr2  = modbusAdr2;
+                      _value       = value;
                       _min         = min;
                       _max         = max;
                       _def         = def;
 
                       _flags.rw    = rw;
-                      _flags.size  = size;
+                      _flags.type  = TYPE_SINGLE_REGISTER;
                       _flags.user  = user;
-                      _value.xy    = value;
                     }
 //  protected:
      uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
      uint32_t  _menu;      // Идентификатор меню.
      char*     _text;      // Тестовая информация
      uint16_t  _modbusAdr; // Адрес модбас
-     uint16_t  _modbusAdr2;// Адрес модбас. Дополнительный, если параметр 32 бита.
+     uint16_t  _value;     // Значение параметра
      uint16_t  _min;       // Минимальное значение
      uint16_t  _max;       // Максимальное значение
      uint16_t  _def;       // Значение по умолчанию
+     static uint32_t  editingValue;     // Переменная, используемая при редактировании параметра
      
-     union{
-       uint16_t  x;        // Значение параметра (мл - один регистр)
-       uint16_t  x_y[2];   // Значение параметра (ст + мл регистры)
-       uint32_t  xy;       // Значение параметра ([ст:мл] из двух регистров)
-     }_value;              // Значение параметра (объединение)
-
      struct {
-       uint8_t size  :2;   // Размер параметра 0-16bit, 1-32bit, 3-резерв
+       uint8_t type  :5;   // Тип параметра. Определяется в конструкторе. 0-Parameter, 1-Parameter2reg, 2-ParameterFlt, 3-резерв
        uint8_t rw    :1;   // Разрешение на запись
        uint8_t user  :1;   // Доступ в режиме пользователя
        }_flags;            // Флаги дополнительных атрибутов
 
-    inline Parameter & operator = (const Parameter & x);
+// Интерфейс работы с данными. В зависимости от типа данных.
+// Объявляются стандартные методы (виртуально). Определяются при инициализации, в зависимости от размера параметра (16 или 32 бит)
+  // Методы, возвращающие значение параметра
+  virtual inline uint32_t getValue  (void)           { return _value; }      // Возвращает значение параметра
+  virtual inline uint32_t getValue1 (void)           { return _value; }      // Возвращает значение параметра1. Заготовка для параметра из 2 регистров
+  virtual inline uint32_t getValue2 (void)           { return _value; }      // Возвращает значение параметра2. Заготовка для параметра из 2 регистров
+  virtual inline float    getValueFlt(void)          { return _value; }      // Возвращает значение параметра в формате float.  Заготовка для параметра, содержащего расчитавыемый float
+  virtual inline void     setValue  (uint32_t value) { _value = value; }     // Устанавливает значение параметра
+  virtual inline void     setValue1 (uint16_t value) { _value = value; }     // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
+  virtual inline void     setValue2 (uint16_t value) { _value = value; }     // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
+  // Методы, возвращающие атрибуты
+  virtual inline uint16_t getType   (void)           { return _flags.type; } // Возвращает тип параметра
+  virtual inline uint16_t getMbAdr  (void)           { return _modbusAdr; }  // Возвращает модбас адрес параметра
+  virtual inline uint16_t getMbAdr2 (void)           { return _modbusAdr; }  // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
+  virtual inline uint32_t getMin    (void)           { return _min; }        // Возвращает минимальное значение параметра
+  virtual inline uint32_t getMax    (void)           { return _max; }        // Возвращает максимальное значение параметра
+
+  // Методы, используемые при редактировании параметра через меню
+  virtual inline void startEditing  (void)           { editingValue = _value; }           // Начало редактирования параметра
+  virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
+  virtual inline void exitEditing   (void)           { }                                  // Выход из редактирования параметра (без сохранения результата)
+  virtual inline void incValue      (uint16_t x, uint8_t power)              // Инкремент параметра
+                                     { if(editingValue + x <= _max) {editingValue += x;} else { editingValue = _min; } }
+  virtual inline void decValue      (uint16_t x, uint8_t power)              // Декремент параметра
+                                     { if(editingValue - x >= _min) {editingValue -= x;} else { editingValue = _max; } }
+
+
+  // Перегрузка операторов
+  inline Parameter & operator = (const Parameter & x);
 
 };
 
@@ -122,10 +138,9 @@ inline Parameter & Parameter :: operator = (const Parameter & x)
   _def       = x._def;
   
   _flags.rw     = x._flags.rw;
-  _flags.size   = x._flags.size;
+  _flags.type   = x._flags.type;
   _flags.user   = x._flags.user;
 
-  _value.xy  = x._value.xy;
    return *this;
 }
 
@@ -133,15 +148,133 @@ inline Parameter & Parameter :: operator = (const Parameter & x)
 //---------------------------------------------------------------------------
 // Operators: "==", "!=", "<", ">", "<=", ">=", "&&", "||"
 //---------------------------------------------------------------------------
-inline bool operator == (const Parameter &x, const Parameter& y)     { return (x._value.xy == y._value.xy); }
-inline bool operator != (const Parameter &x, const Parameter& y)     { return (x._value.xy != y._value.xy); }
-inline bool operator <  (const Parameter &x, const Parameter& y)     { return (x._value.xy <  y._value.xy); }
-inline bool operator >  (const Parameter &x, const Parameter& y)     { return (x._value.xy >  y._value.xy); }
-inline bool operator <= (const Parameter &x, const Parameter& y)     { return (x._value.xy <= y._value.xy); }
-inline bool operator >= (const Parameter &x, const Parameter& y)     { return (x._value.xy >= y._value.xy); }
-inline bool operator && (const Parameter &x, const Parameter& y)     { return (x._value.xy && y._value.xy); }
-inline bool operator || (const Parameter &x, const Parameter& y)     { return (x._value.xy || y._value.xy); }
+inline bool operator == (const Parameter &x, const Parameter& y)     { return (x._value == y._value); }
+inline bool operator != (const Parameter &x, const Parameter& y)     { return (x._value != y._value); }
+inline bool operator <  (const Parameter &x, const Parameter& y)     { return (x._value <  y._value); }
+inline bool operator >  (const Parameter &x, const Parameter& y)     { return (x._value >  y._value); }
+inline bool operator <= (const Parameter &x, const Parameter& y)     { return (x._value <= y._value); }
+inline bool operator >= (const Parameter &x, const Parameter& y)     { return (x._value >= y._value); }
+inline bool operator && (const Parameter &x, const Parameter& y)     { return (x._value && y._value); }
+inline bool operator || (const Parameter &x, const Parameter& y)     { return (x._value || y._value); }
 
+
+
+
+//=================================================================================================
+//  Класс, определяющий настроечный параметр, состоящий из 2 регистров (size = 1 - 32 бит)
+//=================================================================================================
+class Parameter2reg : public Parameter{
+public:
+    // Конструктор без параметров
+    Parameter2reg() { _flags.type  = TYPE_DOUBLE_REGISTER; };
+
+  
+    // Конструктор с параметрами
+    Parameter2reg(  uint16_t   id,
+                uint32_t   menu,
+                char*      text,
+                uint16_t   modbusAdr,
+                uint16_t   modbusAdr2,
+                uint16_t   value,
+                uint16_t   value2,
+                uint16_t   rw,
+                uint16_t   min,
+                uint16_t   min2,
+                uint16_t   max,
+                uint16_t   max2,
+                uint16_t   user,
+                uint16_t   def,
+                uint16_t   def2
+                ):
+    Parameter(     id,
+                   menu,
+                   text,
+                   modbusAdr,
+                   value,
+                   rw,
+                   min,
+                   max,
+                   user,
+                   def
+                )
+                { _flags.type = TYPE_DOUBLE_REGISTER;
+                  _modbusAdr2 = modbusAdr2;
+                  _value2 = value2;
+                  _min2 = min2;
+                  _max2 = max2;
+                  _def2 = def2;
+                };
+
+
+  uint16_t   _modbusAdr2;
+  uint16_t   _value2;
+  uint16_t   _min2;
+  uint16_t   _max2;
+  uint16_t   _def2;
+
+// Переопределение методов под данный тип параметра
+ virtual inline uint32_t getValue  (void)           { return BYTES_TO_LONG(_value2, _value); }   // Возвращает значение параметра
+ virtual inline uint32_t getValue1 (void)           { return _value; }                           // Возвращает значение параметра.
+ virtual inline uint32_t getValue2 (void)           { return _value2; }                          // Возвращает значение параметра.
+ virtual inline void     setValue  (uint32_t value) { _value2 = value >> 16; _value = value & 0xFFFF; } // Устанавливает значение параметра.
+ virtual inline void     setValue1 (uint16_t value) { _value  = value; }                         // Устанавливает значение параметра.
+ virtual inline void     setValue2 (uint16_t value) { _value2 = value; }                         // Устанавливает значение параметра.
+ virtual inline uint16_t getMbAdr2 (void)           { return _modbusAdr2; }                      // Возвращает дополнительный модбас адрес параметра. Заготовка для 32бит параметра
+ virtual inline uint32_t getMin    (void)           { return BYTES_TO_LONG(_min2, _min); }       // Возвращает минимальное значение параметра
+ virtual inline uint32_t getMax    (void)           { return BYTES_TO_LONG(_max2, _max); }       // Возвращает максимальное значение параметра
+};
+
+
+
+//=================================================================================================
+//  Класс, определяющий настроечный параметр c расчитаным float значением
+//  Зная value и pow, расчитывается значение float
+//=================================================================================================
+class ParameterFlt : public Parameter{
+public:
+    // Конструктор без параметров
+    ParameterFlt() { };
+
+  
+    // Конструктор с параметрами
+    ParameterFlt(  uint16_t   id,
+                uint32_t   menu,
+                char*      text,
+                uint16_t   modbusAdr,
+                uint16_t   value,
+                int16_t    power,
+                uint16_t   rw,
+                uint16_t   min,
+                uint16_t   max,
+                uint16_t   user,
+                uint16_t   def
+                ):
+    Parameter(     id,
+                   menu,
+                   text,
+                   modbusAdr,
+                   value,
+                   rw,
+                   min,
+                   max,
+                   user,
+                   def
+                )
+                { _flags.type = TYPE_FLOAT;
+                  _power = power;
+                };
+
+
+  float   _valueFlt;  // Значение в формате float
+  int16_t _power;     // Степень. Для перевода из int в float
+
+// Переопределение методов под данный тип параметра
+  virtual inline float getValueFlt (void)           { return _valueFlt; }                               // Возвращает значение параметра.
+  virtual inline void  setValue    (uint32_t value) { _value = value; _valueFlt = (float)value * pow(10.0, (int)_power); } // Устанавливает значение параметра.
+
+  // Методы, используемые при редактировании параметра через меню
+  virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
+};
 
 
 
@@ -153,8 +286,12 @@ inline bool operator || (const Parameter &x, const Parameter& y)     { return (x
 
 class MapsOfParameters{
   public:
-    void PutToMaps (Parameter& parameter); // Положить ссылку на объект в карты
-    void Init();                           // Инициализация карт
+    void putToMaps (Parameter& parameter);      // Положить ссылку на объект в карты
+    Parameter* getMbParameter (uint16_t mbAdr); // По адресу ModBus возвращает указатель на параметр
+    Parameter* getIdParameter (uint16_t id);    // По идентификатору ID возвращает указатель на параметр
+    uint16_t   getMbValue     (uint16_t mbAdr); // По адресу ModBus возвращает значение параметра (заданного регистра регистра)
+    uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
+    void Init();                                // Инициализация карт
   
     map<uint16_t, Parameter*> idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
     map<uint16_t, Parameter*> mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
@@ -167,4 +304,5 @@ class MapsOfParameters{
 #endif
 #endif	//define PARAMETERS_H
 
-	
+
+

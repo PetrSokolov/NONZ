@@ -33,11 +33,11 @@ class CUART1 : public CUART_Base{
 			  txbufer = new uint16_t [tx_size];
 				 sizeof_txbufer = tx_size;*/
 			}
-		void Tx();
-		void Rx();
-		void Init();
-		void TxISR();
-		void RxISR();
+		virtual void Tx();
+		virtual void Rx();
+		virtual void Init();
+		virtual void TxISR();
+		virtual void RxISR();
 };
 
 

@@ -40,6 +40,7 @@ void Pwm::setFrequency (float frequency)
 uint16_t Pwm::computeDeathTime (float deathTime)
 {
 	// Расчет death time зависит от текущей реализации. Реализуется в PWM_User.cpp
+  return 0;
 }
 
 

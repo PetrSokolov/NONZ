@@ -16,8 +16,8 @@ class BaseAdc{
 	protected:
 		uint16_t	_convertedSamples;	// Количество конвертированных данных
 	public:
-	  virtual void 			GetSample(uint16_t n, uint16_t &sample) =0;// Чистая виртуальная функция, ее нужно определить в производном классе
-	  virtual uint16_t	GetSample() =0;// Чистая виртуальная функция, ее нужно определить в производном классе
+	  virtual void 			getSample(uint16_t n, uint16_t &sample) =0;// Чистая виртуальная функция, ее нужно определить в производном классе
+	  virtual uint16_t	getSample() =0;// Чистая виртуальная функция, ее нужно определить в производном классе
 //		virtual void EOC(void) =0;	// Чистая виртуальная функция, ее нужно определить в производном классе
 		virtual void Init(void) =0;		// Чистая виртуальная функция, ее нужно определить в производном классе
 };
@@ -30,9 +30,9 @@ class Adc_1 : public BaseAdc{
 		uint16_t	_convertedBuf[2];	// Буфер для конвертированных данных
 	public:
 		Adc_1();
-		inline void			GetSample(uint16_t n, uint16_t &sample) {sample = _convertedBuf[n];}
-		inline uint16_t	GetSample() {return _convertedBuf[0];}
-		void Init(void);
+		virtual inline void			getSample(uint16_t n, uint16_t &sample) {sample = _convertedBuf[n];}
+		virtual inline uint16_t	getSample() {return _convertedBuf[0];}
+		virtual void Init(void);
 };
 //-------------------------------------------------------------------------------------------------------
 // Производный класс АЦП2
@@ -42,9 +42,9 @@ class Adc_3 : public BaseAdc{
 		uint16_t	_convertedBuf[3];	// Буфер для конвертированных данных
 	public:
 		Adc_3();
-		inline void GetSample(uint16_t n, uint16_t &sample)	{sample = _convertedBuf[n];}
-		inline uint16_t	GetSample()													{return _convertedBuf[0];}
-		void Init(void);
+		virtual inline void     getSample(uint16_t n, uint16_t &sample)	{sample = _convertedBuf[n];}
+		virtual inline uint16_t	getSample()													{return _convertedBuf[0];}
+		virtual void Init(void);
 };
 							
 } // namespace

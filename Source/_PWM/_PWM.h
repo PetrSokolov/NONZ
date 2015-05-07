@@ -12,6 +12,7 @@
 #define PWM_H
 
 #include "stdint.h"
+#include "..\Menu_Items\__Parameters_User.h"
 //#include "stm32f10x.h"
 
 #ifdef __cplusplus
@@ -41,7 +42,7 @@ class Pwm{
     virtual	uint16_t computeDeathTime (float deathTime) = 0;
 
                 uint16_t  _frequency;     //  Частота модуляции ШИМ
-                float     _value;         //  Амплитуда
+//                float     _value;         //  Амплитуда
                 uint16_t  _block;         //  Блокировка. Отключение ШИМ
                 uint16_t  _timerPeriod;   //  Период таймера(ШИМ) [в отсчетах таймера]
 
@@ -58,7 +59,8 @@ class Pwm{
       volatile  uint16_t* _compare3;      //  Указатель на регистр сравнения CH3
 
   // Указатели на настроечные параметры
-                uint16_t* _deathTime;     //  Указатель на настроечный параметр death time[мкс]
+                Parameter* _deathTime;     //  Указатель на настроечный параметр. death time[мкс]
+                Parameter* _value;         //  Указатель на настроечный параметр. Амплитуда [%]
 };
 
 
@@ -71,10 +73,10 @@ class Pwm{
 
 class Pwm2phaseNONZ : public Pwm{
 	public:
-    void setValue	(float value);
-		void init	    (void);
+    virtual void setValue	(float value);
+		virtual void init	    (void);
 	private:
-		uint16_t computeDeathTime (float deathTime);
+		virtual uint16_t computeDeathTime (float deathTime);
 };
 
 }	// namespace src

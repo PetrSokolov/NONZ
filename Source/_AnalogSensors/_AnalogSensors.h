@@ -80,7 +80,7 @@ namespace src{
 //	GetValue				- Получить значение в единицах измерения (В, А, ...). Аргументу присваивается значение.
 inline	void AnalogRmsSensor::GetValue		(float &value)
 {
-	value = GetMean() * _calibration_value;
+	value = getMean() * _calibration_value;
 }
 
 
@@ -90,7 +90,7 @@ inline	void AnalogRmsSensor::GetValue		(float &value)
 //	GetValue				- Получить значение в единицах измерения (В, А, ...). Аргументу присваивается значение.
 inline	void AnalogMeanSensor::GetValue		(float &value)
 {
-	value = GetMean() * _calibration_value;
+	value = getMean() * _calibration_value;
 }
 
 //-------------------------------------------------------------------------------------------------------------------

@@ -21,14 +21,14 @@ namespace src{
 // Конструктор без параметров. Устанавливаются значения по умолчанию ts = 200mks, tf = 0.1sec
 AnalogRmsSensor::AnalogRmsSensor()
  {
-	PutTsTf	(0.0002, 0.1);
+	putTsTf	(0.0002, 0.1);
  }
 
 
 // Конструктор с параметрами
 AnalogRmsSensor::AnalogRmsSensor (float ts, float tf)// : AnalogSensor(ts, tf)
 {
-	PutTsTf		(ts, tf);
+	putTsTf		(ts, tf);
 }
 
 // Установить калибровочный коэффициент
@@ -45,14 +45,14 @@ void AnalogRmsSensor::SetCalibration	(uint16_t value)
 // Конструктор без параметров. Устанавливаются значения по умолчанию ts = 200mks, tf = 0.1sec
 AnalogMeanSensor::AnalogMeanSensor()
  {
-	PutTsTf	(0.0002, 0.1);
+	putTsTf	(0.0002, 0.1);
  }
 
 
 // Конструктор с параметрами
 AnalogMeanSensor::AnalogMeanSensor (float ts, float tf)// : AnalogSensor(ts, tf)
 {
-	PutTsTf		(ts, tf);
+	putTsTf		(ts, tf);
 }
 
 // Установить калибровочный коэффициент

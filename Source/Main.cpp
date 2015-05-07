@@ -34,7 +34,10 @@ string str1 ("First string");
 string str2 ("Second string");
 string str3;
 
-int tmp1, tmp2;
+uint32_t tmp32_1, tmp32_2;
+uint16_t tmp16_1, tmp16_2;
+Parameter* par_ptr;
+Parameter2reg* par32_ptr;
 
 
 //---------------------------------------------------------------------------------------------------------
@@ -118,44 +121,54 @@ void RCC_Configuration(void)
 //---------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------
-/*  
-Parameter* parameterPointer;
-  map<uint16_t, Parameter*>::iterator i;
-  i = mapsOfParameters.idMap.begin();
-  tmp1 = (*i).first;
-   parameterPointer = (*i).second;
-  tmp2 = parameterPointer->_value.xy;
 
-  i++;
+/*Parameter* parameterPointer;
+parameterPointer = mapsOfParameters.GetMbParameter(256);
+ tmp32_1 = parameterPointer->GetValue();
+parameterPointer = mapsOfParameters.GetMbParameter(257);
+ tmp32_1 = parameterPointer->GetValue();
+parameterPointer = mapsOfParameters.GetMbParameter(5);
+ tmp32_1 = parameterPointer->GetValue();
+parameterPointer = mapsOfParameters.GetMbParameter(6);
+ tmp32_1 = parameterPointer->GetValue();
 
-  tmp1 = (*i).first;
-   parameterPointer = (*i).second;
-  tmp2 = parameterPointer->_value.xy;
-//  
-  i = mapsOfParameters.mbMap.begin();
-  tmp1 = (*i).first;
-   parameterPointer = (*i).second;
-  tmp2 = parameterPointer->_value.xy;
-
-  i++;
-
-  tmp1 = (*i).first;
-   parameterPointer = (*i).second;
-  tmp2 = parameterPointer->_value.xy;
+parameterPointer = mapsOfParameters.GetIdParameter(1);
+ tmp32_1 = parameterPointer->GetValue();
+parameterPointer = mapsOfParameters.GetIdParameter(2);
+ tmp32_1 = parameterPointer->GetValue();
+parameterPointer = mapsOfParameters.GetIdParameter(3);
+ tmp32_1 = parameterPointer->GetValue();
 */
 
+tmp32_1 = mapsOfParameters.getMbValue(256);
+tmp32_1 = mapsOfParameters.getMbValue(257);
+//tmp32_1 = mapsOfParameters.getMbValue(5);
+//tmp32_1 = mapsOfParameters.getMbValue(6);
+
+tmp32_2 = mapsOfParameters.getIdValue(1);
+tmp32_2 = mapsOfParameters.getIdValue(2);
+tmp32_2 = mapsOfParameters.getIdValue(3);
+tmp32_2 = mapsOfParameters.getIdValue(33);
+
+  pwmDeathTime.startEditing();
+  pwmDeathTime.incValue(1,0);
+  pwmDeathTime.incValue(2,0);
+  pwmDeathTime.incValue(3,0);
+  pwmDeathTime.decValue(2,0);
+  pwmDeathTime.endEditing();
+
+  
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);
-  
 	
 	while (1)
  {
 	GPIOA->BSRR = 1;
 	GPIOA->BRR = 1;
-	current.PutSample(adc_1.GetSample());
-	voltage.PutSample(adc_1.GetSample());
-	voltageRms.PutSample(adc_1.GetSample());
+	current.putSample(adc_1.getSample());
+	voltage.putSample(adc_1.getSample());
+	voltageRms.putSample(adc_1.getSample());
  }
 }
 
