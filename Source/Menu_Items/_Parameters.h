@@ -132,7 +132,7 @@ class Parameter{
   virtual inline void exitEditing   (void)           { }                     // Выход из редактирования параметра (без сохранения результата)
   virtual        void incValueHandler(uint16_t x, uint8_t power){}            // Инкремент параметра
   virtual        void decValueHandler(uint16_t x, uint8_t power) {}            // Декремент параметра
-  virtual        void enterHandler  (void) {}                                  // Обработчик ввода при редактировании параметра
+//  virtual        void enterHandler  (void) {}                                  // Обработчик ввода при редактировании параметра
 //  virtual inline uint32_t getEditingValue(void)      { return editingValue; }// Выход из редактирования параметра (без сохранения результата)
 
 
