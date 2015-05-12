@@ -27,6 +27,27 @@ using namespace std;
 
 namespace src{	 
 
+//====================================================================================================
+//  Класс, определяющий организацию настроечных параметров и ModBus регистров. И работу с ними
+//  Содержит 2 объекта класса MAP. map[id / Parameter*] и сформированую по ней map[mbAdr / Parameter*]
+//  Метод PutToMaps прописывает объект-параметр в карты. И дальше все должно само работать.
+//====================================================================================================
+class Parameter;
+class MapsOfParameters{
+  public:
+    void putToMaps (Parameter* parameter);      // Положить ссылку на объект в карты
+    Parameter* getMbParameter (uint16_t mbAdr); // По адресу ModBus возвращает указатель на параметр
+    Parameter* getIdParameter (uint16_t id);    // По идентификатору ID возвращает указатель на параметр
+    uint16_t   getMbValue     (uint16_t mbAdr); // По адресу ModBus возвращает значение параметра (заданного регистра регистра)
+    uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
+    void init();                                // Инициализация карт
+  
+    map<uint16_t, Parameter*> idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
+    map<uint16_t, Parameter*> mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
+};
+  
+
+//====================================================================================================
   // Список типов параметров
 enum {
   TYPE_SINGLE_REGISTER,
@@ -54,22 +75,10 @@ class Parameter{
                 uint16_t   min,
                 uint16_t   max,
                 uint16_t   user,
-                uint16_t   def
-                 )
-                    { 
-                      _id          = id;
-                      _menu        = menu;
-                      _text        = text;
-                      _modbusAdr   = modbusAdr;
-                      _value       = value;
-                      _min         = min;
-                      _max         = max;
-                      _def         = def;
+                uint16_t   def,
+                MapsOfParameters& mapsOfParameters
+             );
 
-                      _flags.rw    = rw;
-                      _flags.type  = TYPE_SINGLE_REGISTER;
-                      _flags.user  = user;
-                    }
 //  protected:
      uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
      uint32_t  _menu;      // Идентификатор меню.
@@ -166,7 +175,7 @@ inline bool operator || (const Parameter &x, const Parameter& y)     { return (x
 class Parameter2reg : public Parameter{
 public:
     // Конструктор без параметров
-    Parameter2reg() { _flags.type  = TYPE_DOUBLE_REGISTER; };
+    Parameter2reg(); //{ _flags.type  = TYPE_DOUBLE_REGISTER; };
 
   
     // Конструктор с параметрами
@@ -184,27 +193,9 @@ public:
                 uint16_t   max2,
                 uint16_t   user,
                 uint16_t   def,
-                uint16_t   def2
-                ):
-    Parameter(     id,
-                   menu,
-                   text,
-                   modbusAdr,
-                   value,
-                   rw,
-                   min,
-                   max,
-                   user,
-                   def
-                )
-                { _flags.type = TYPE_DOUBLE_REGISTER;
-                  _modbusAdr2 = modbusAdr2;
-                  _value2 = value2;
-                  _min2 = min2;
-                  _max2 = max2;
-                  _def2 = def2;
-                };
-
+                uint16_t   def2,
+                MapsOfParameters& mapsOfParameters
+                );
 
   uint16_t   _modbusAdr2;
   uint16_t   _value2;
@@ -247,23 +238,9 @@ public:
                 uint16_t   min,
                 uint16_t   max,
                 uint16_t   user,
-                uint16_t   def
-                ):
-    Parameter(     id,
-                   menu,
-                   text,
-                   modbusAdr,
-                   value,
-                   rw,
-                   min,
-                   max,
-                   user,
-                   def
-                )
-                { _flags.type = TYPE_FLOAT;
-                  _power = power;
-                };
-
+                uint16_t   def,
+                MapsOfParameters& mapsOfParameters
+                );
 
   float   _valueFlt;  // Значение в формате float
   int16_t _power;     // Степень. Для перевода из int в float
@@ -276,26 +253,6 @@ public:
   virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
 };
 
-
-
-//====================================================================================================
-//  Класс, определяющий организацию настроечных параметров и ModBus регистров. И работу с ними
-//  Содержит 2 объекта класса MAP. map[id / Parameter*] и сформированую по ней map[mbAdr / Parameter*]
-//  Метод PutToMaps прописывает объект-параметр в карты. И дальше все должно само работать.
-//====================================================================================================
-
-class MapsOfParameters{
-  public:
-    void putToMaps (Parameter& parameter);      // Положить ссылку на объект в карты
-    Parameter* getMbParameter (uint16_t mbAdr); // По адресу ModBus возвращает указатель на параметр
-    Parameter* getIdParameter (uint16_t id);    // По идентификатору ID возвращает указатель на параметр
-    uint16_t   getMbValue     (uint16_t mbAdr); // По адресу ModBus возвращает значение параметра (заданного регистра регистра)
-    uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
-    void Init();                                // Инициализация карт
-  
-    map<uint16_t, Parameter*> idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
-    map<uint16_t, Parameter*> mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
-};
 
 }	// namespace src
 

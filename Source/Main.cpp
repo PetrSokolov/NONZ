@@ -34,7 +34,7 @@ string str1 ("First string");
 string str2 ("Second string");
 string str3;
 
-uint32_t tmp32_1, tmp32_2;
+uint32_t tmp32_1, tmp32_2, tmp32_5, tmp32_33, tmp32_256, tmp32_257, tmp32_100, tmp32_101;
 uint16_t tmp16_1, tmp16_2;
 Parameter* par_ptr;
 Parameter2reg* par32_ptr;
@@ -108,7 +108,7 @@ void RCC_Configuration(void)
 //---------------------------------------------------------------------------------------------------------
 // Инициализация объектов
 //---------------------------------------------------------------------------------------------------------
-	mapsOfParameters.Init();
+	mapsOfParameters.init();
   adc_1.Init();
 	adc_3.Init();
 	UART_1.Init();
@@ -140,15 +140,16 @@ parameterPointer = mapsOfParameters.GetIdParameter(3);
  tmp32_1 = parameterPointer->GetValue();
 */
 
-tmp32_1 = mapsOfParameters.getMbValue(256);
-tmp32_1 = mapsOfParameters.getMbValue(257);
+tmp32_256 = mapsOfParameters.getMbValue(256);
+tmp32_257 = mapsOfParameters.getMbValue(257);
 //tmp32_1 = mapsOfParameters.getMbValue(5);
 //tmp32_1 = mapsOfParameters.getMbValue(6);
 
-tmp32_2 = mapsOfParameters.getIdValue(1);
+tmp32_1 = mapsOfParameters.getIdValue(1);
 tmp32_2 = mapsOfParameters.getIdValue(2);
-tmp32_2 = mapsOfParameters.getIdValue(3);
-tmp32_2 = mapsOfParameters.getIdValue(33);
+tmp32_5 = mapsOfParameters.getIdValue(5);
+tmp32_100 = mapsOfParameters.getIdValue(100);
+tmp32_101 = mapsOfParameters.getIdValue(101);
 
   pwmDeathTime.startEditing();
   pwmDeathTime.incValue(1,0);
