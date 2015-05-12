@@ -142,20 +142,20 @@ parameterPointer = mapsOfParameters.GetIdParameter(3);
 
 tmp32_256 = mapsOfParameters.getMbValue(256);
 tmp32_257 = mapsOfParameters.getMbValue(257);
-//tmp32_1 = mapsOfParameters.getMbValue(5);
-//tmp32_1 = mapsOfParameters.getMbValue(6);
+tmp32_1 = mapsOfParameters.getMbValue(5);
+tmp32_1 = mapsOfParameters.getMbValue(6);
 
 tmp32_1 = mapsOfParameters.getIdValue(1);
 tmp32_2 = mapsOfParameters.getIdValue(2);
 tmp32_5 = mapsOfParameters.getIdValue(5);
 tmp32_100 = mapsOfParameters.getIdValue(100);
-tmp32_101 = mapsOfParameters.getIdValue(101);
+tmp32_101 = mapsOfParameters.getIdValue(6);
 
   pwmDeathTime.startEditing();
-  pwmDeathTime.incValue(1,0);
-  pwmDeathTime.incValue(2,0);
-  pwmDeathTime.incValue(3,0);
-  pwmDeathTime.decValue(2,0);
+  pwmDeathTime.incValueHandler(1,0);
+  pwmDeathTime.incValueHandler(2,0);
+  pwmDeathTime.incValueHandler(3,0);
+  pwmDeathTime.decValueHandler(2,0);
   pwmDeathTime.endEditing();
 
   

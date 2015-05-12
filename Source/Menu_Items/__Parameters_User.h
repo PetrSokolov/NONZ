@@ -34,7 +34,6 @@ extern ParameterFlt pwmDeathTime;
 //-----------------------------------------------------------------------------------------------------------
 
 extern Parameter2reg par3;
-extern MapsOfParameters mapsOfParameters;
    
 // }	// namespace src
 

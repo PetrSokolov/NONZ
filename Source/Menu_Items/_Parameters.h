@@ -79,6 +79,19 @@ class Parameter{
                 MapsOfParameters& mapsOfParameters
              );
 
+   // Конструктор с параметрами. Без записи в карты
+/*    Parameter(  uint16_t   id,
+                uint32_t   menu,
+                char*      text,
+                uint16_t   modbusAdr,
+                uint16_t   value,
+                uint16_t   rw,
+                uint16_t   min,
+                uint16_t   max,
+                uint16_t   user,
+                uint16_t   def
+             );*/
+
 //  protected:
      uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
      uint32_t  _menu;      // Идентификатор меню.
@@ -114,13 +127,13 @@ class Parameter{
   virtual inline uint32_t getMax    (void)           { return _max; }        // Возвращает максимальное значение параметра
 
   // Методы, используемые при редактировании параметра через меню
-  virtual inline void startEditing  (void)           { editingValue = _value; }           // Начало редактирования параметра
+  virtual inline void startEditing  (void)           { editingValue = _value; }     // Начало редактирования параметра
   virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
-  virtual inline void exitEditing   (void)           { }                                  // Выход из редактирования параметра (без сохранения результата)
-  virtual inline void incValue      (uint16_t x, uint8_t power)              // Инкремент параметра
-                                     { if(editingValue + x <= _max) {editingValue += x;} else { editingValue = _min; } }
-  virtual inline void decValue      (uint16_t x, uint8_t power)              // Декремент параметра
-                                     { if(editingValue - x >= _min) {editingValue -= x;} else { editingValue = _max; } }
+  virtual inline void exitEditing   (void)           { }                     // Выход из редактирования параметра (без сохранения результата)
+  virtual        void incValueHandler(uint16_t x, uint8_t power){}            // Инкремент параметра
+  virtual        void decValueHandler(uint16_t x, uint8_t power) {}            // Декремент параметра
+  virtual        void enterHandler  (void) {}                                  // Обработчик ввода при редактировании параметра
+//  virtual inline uint32_t getEditingValue(void)      { return editingValue; }// Выход из редактирования параметра (без сохранения результата)
 
 
   // Перегрузка операторов
@@ -197,6 +210,24 @@ public:
                 MapsOfParameters& mapsOfParameters
                 );
 
+   // Конструктор с параметрами. Без записи в карты
+/*    Parameter2reg(  uint16_t   id,
+                uint32_t   menu,
+                char*      text,
+                uint16_t   modbusAdr,
+                uint16_t   modbusAdr2,
+                uint16_t   value,
+                uint16_t   value2,
+                uint16_t   rw,
+                uint16_t   min,
+                uint16_t   min2,
+                uint16_t   max,
+                uint16_t   max2,
+                uint16_t   user,
+                uint16_t   def,
+                uint16_t   def2
+                );*/
+                
   uint16_t   _modbusAdr2;
   uint16_t   _value2;
   uint16_t   _min2;
@@ -242,6 +273,20 @@ public:
                 MapsOfParameters& mapsOfParameters
                 );
 
+                // Конструктор с параметрами. Без записи в карты
+/*    ParameterFlt(  uint16_t   id,
+                uint32_t   menu,
+                char*      text,
+                uint16_t   modbusAdr,
+                uint16_t   value,
+                int16_t    power,
+                uint16_t   rw,
+                uint16_t   min,
+                uint16_t   max,
+                uint16_t   user,
+                uint16_t   def
+                );*/
+
   float   _valueFlt;  // Значение в формате float
   int16_t _power;     // Степень. Для перевода из int в float
 
@@ -253,6 +298,54 @@ public:
   virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
 };
 
+
+
+//=================================================================================================
+//  Декоратор параметра. Функция калибровки
+//=================================================================================================
+/*class DecoratorCalibrated : public Parameter {
+public:
+    // Конструктор без параметров
+    DecoratorCalibrated () { };
+
+    // Конструктор с параметрами
+    DecoratorCalibrated (MapsOfParameters& mapsOfParameters, Parameter* parameter)
+      { _parameter = parameter;
+        mapsOfParameters.putToMaps(this);
+      }
+
+    float _calibratingValue;  // Значение расчитанного калибровочного коэффициента
+
+// Переопределение методов под данный тип параметра
+  // Методы, возвращающие значение параметра
+  virtual inline uint32_t getValue  (void)           { return _parameter->_value; }      // Возвращает значение параметра
+  virtual inline uint32_t getValue1 (void)           { return _parameter->_value; }      // Возвращает значение параметра1. Заготовка для параметра из 2 регистров
+  virtual inline uint32_t getValue2 (void)           { return _parameter->_value; }      // Возвращает значение параметра2. Заготовка для параметра из 2 регистров
+  virtual inline float    getValueFlt(void)          { return _parameter->_value; }      // Возвращает значение параметра в формате float.  Заготовка для параметра, содержащего расчитавыемый float
+  virtual inline void     setValue  (uint32_t value) { _parameter->_value = value; }     // Устанавливает значение параметра
+  virtual inline void     setValue1 (uint16_t value) { _parameter->_value = value; }     // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
+  virtual inline void     setValue2 (uint16_t value) { _parameter->_value = value; }     // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
+  // Методы, возвращающие атрибуты
+  virtual inline uint16_t getType   (void)           { return _parameter->_flags.type; } // Возвращает тип параметра
+  virtual inline uint16_t getMbAdr  (void)           { return _parameter->_modbusAdr; }  // Возвращает модбас адрес параметра
+  virtual inline uint16_t getMbAdr2 (void)           { return _parameter->_modbusAdr; }  // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
+  virtual inline uint32_t getMin    (void)           { return _parameter->_min; }        // Возвращает минимальное значение параметра
+  virtual inline uint32_t getMax    (void)           { return _parameter->_max; }        // Возвращает максимальное значение параметра
+  // Методы, используемые при редактировании параметра через меню
+  virtual inline void startEditing  (void)           { _parameter->startEditing(); }    // Начало редактирования параметра
+  virtual inline void endEditing    (void)           { _parameter->endEditing();   }    // Завершение редактирования параметра. С последующей командой на сохранение.
+  virtual inline void exitEditing   (void)           { _parameter->exitEditing();  }                     // Выход из редактирования параметра (без сохранения результата)
+  virtual inline void incValueHandler(uint16_t x, uint8_t power) {_parameter->incValueHandler(x, power); }           // Инкремент параметра
+  virtual inline void decValueHandler(uint16_t x, uint8_t power) {_parameter->decValueHandler(x, power); }           // Декремент параметра
+  virtual        void enterHandler  (void);                                  // Обработчик ввода при редактировании параметра
+  virtual inline uint32_t getEditingValue(void)      { return _parameter->editingValue; }// 
+
+private:
+  Parameter*  _parameter;       // Декорируемый объект
+  float       _autocalibrValue; // Калибровочный коэффициент. Вычисленный автоматически.
+  uint8_t     _calibrating;     // Статус калибровки. 0-нет, 1-включена
+};
+*/
 
 }	// namespace src
 
