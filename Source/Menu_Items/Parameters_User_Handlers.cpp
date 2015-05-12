@@ -41,7 +41,7 @@ void Parameter::enterHandler (void)
 //          DecoratorCalibrated
 // Декоратор параметра. Калибруемый
 //========================================================================================================
-/*
+
 void DecoratorCalibrated::enterHandler  (void)
 {
   if(_parameter->getEditingValue() == 1){
@@ -53,5 +53,5 @@ void DecoratorCalibrated::enterHandler  (void)
      
 }
 
-*/
+
 

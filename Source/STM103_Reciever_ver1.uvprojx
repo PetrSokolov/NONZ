@@ -347,7 +347,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>0</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -362,7 +362,7 @@
             <uC99>0</uC99>
             <useXO>0</useXO>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--exceptions</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
               <IncludePath>.\_ADC;.\_AnalogSensors;.\_DSP_tools;.\_FXP_Math;.\_UART;C:\Keil_v5\ARM\ARMCC\include</IncludePath>

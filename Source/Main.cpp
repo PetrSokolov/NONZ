@@ -141,11 +141,13 @@ parameterPointer = mapsOfParameters.GetIdParameter(3);
 */
 
 tmp32_256 = mapsOfParameters.getMbValue(256);
+tmp32_256 = mapsOfParameters.getMbValue(256);
 tmp32_257 = mapsOfParameters.getMbValue(257);
-tmp32_1 = mapsOfParameters.getMbValue(5);
-tmp32_1 = mapsOfParameters.getMbValue(6);
+tmp32_1 = mapsOfParameters.getMbValue(7);
+tmp32_1 = mapsOfParameters.getMbValue(8);
 
-tmp32_1 = mapsOfParameters.getIdValue(1);
+
+tmp32_1 = mapsOfParameters.getIdValue(6);
 tmp32_2 = mapsOfParameters.getIdValue(2);
 tmp32_5 = mapsOfParameters.getIdValue(5);
 tmp32_100 = mapsOfParameters.getIdValue(100);

@@ -34,6 +34,7 @@ extern ParameterFlt pwmDeathTime;
 //-----------------------------------------------------------------------------------------------------------
 
 extern Parameter2reg par3;
+extern DecoratorCalibrated par5;
    
 // }	// namespace src
 
