@@ -8,9 +8,11 @@
 // 	-----|-------------|----------------|----------------------------------------------
 //#####################################################################################
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef MENU_ENGINE_H
+#define MENU_ENGINE_H
 
+#include "_Parameters.h"
+#include <vector>
 
 #ifdef __cplusplus
  extern "C" {
@@ -18,11 +20,17 @@
 
 namespace src{	 
 
-class Engine{
+class MenuEngine{
 	public:
+    // Конструктор с параметрами
+    MenuEngine(MapsOfParameters* mapsOfParameters)  { _mapsOfParameters = mapsOfParameters; }
+  
 	protected:
-		long long	M;	// Состояние автомата меню
-		int				IM;	// Индекс листига текущего меню
+    void              getAvailableElements(); // Формирует список доступных элементов меню. На текущем уровне.
+    MapsOfParameters* _mapsOfParameters;      // Агрегация объекта, содержащего карты
+    vector<Parameter> _availableElements;     // Список доступных элементов меню. На текущем уровне.
+		long long       	M;	                    // Состояние автомата меню
+		int				        IM;                   	// Индекс листига текущего меню
 
 };
 	
@@ -30,7 +38,7 @@ class Engine{
 #ifdef __cplusplus
 }
 #endif
-#endif	//define UART_HPP
+#endif	//define MENU_ENGINE_H
 
 
 
