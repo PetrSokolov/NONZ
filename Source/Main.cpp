@@ -34,7 +34,9 @@ string str1 ("First string");
 string str2 ("Second string");
 string str3;
 
-uint32_t tmp32_1, tmp32_2, tmp32_5, tmp32_33, tmp32_256, tmp32_257, tmp32_100, tmp32_101;
+uint16_t tmp_mbSize, tmp_idSize;
+uint32_t tmp32_1, tmp32_2, tmp32_3, tmp32_4, tmp32_5, tmp32_6;
+uint32_t tmp32_256, tmp32_257, tmp32_258, tmp32_259, tmp32_260, tmp32_261, tmp32_262, tmp32_263;
 uint16_t tmp16_1, tmp16_2;
 Parameter* par_ptr;
 Parameter2reg* par32_ptr;
@@ -141,17 +143,24 @@ parameterPointer = mapsOfParameters.GetIdParameter(3);
 */
 
 tmp32_256 = mapsOfParameters.getMbValue(256);
-tmp32_256 = mapsOfParameters.getMbValue(256);
 tmp32_257 = mapsOfParameters.getMbValue(257);
-tmp32_1 = mapsOfParameters.getMbValue(7);
-tmp32_1 = mapsOfParameters.getMbValue(8);
+tmp32_258 = mapsOfParameters.getMbValue(258);
+tmp32_259 = mapsOfParameters.getMbValue(259);
+tmp32_260 = mapsOfParameters.getMbValue(260);
+tmp32_261 = mapsOfParameters.getMbValue(261);
+tmp32_262 = mapsOfParameters.getMbValue(262);
+tmp32_263 = mapsOfParameters.getMbValue(263);
+
+tmp_mbSize = mapsOfParameters.mbMapSize();
+tmp_idSize = mapsOfParameters.idMapSize();
 
 
-tmp32_1 = mapsOfParameters.getIdValue(6);
+tmp32_1 = mapsOfParameters.getIdValue(1);
 tmp32_2 = mapsOfParameters.getIdValue(2);
+tmp32_3 = mapsOfParameters.getIdValue(3);
+tmp32_4 = mapsOfParameters.getIdValue(4);
 tmp32_5 = mapsOfParameters.getIdValue(5);
-tmp32_100 = mapsOfParameters.getIdValue(100);
-tmp32_101 = mapsOfParameters.getIdValue(6);
+tmp32_6 = mapsOfParameters.getIdValue(6);
 
   pwmDeathTime.startEditing();
   pwmDeathTime.incValueHandler(1,0);

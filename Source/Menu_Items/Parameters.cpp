@@ -29,20 +29,36 @@ uint32_t  Parameter::editingValue;    // Статическая переменн
 //--------------------------------------------------------------------------------------------------------
 void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить ссылку на объект в карты  
 {
-  idMap[parameter->_id]        = parameter;
+  idMap[parameter->getId()]    = parameter;
   mbMap[parameter->getMbAdr()] = parameter;
 
   // Если параметр состоит из 2 регистров, инициализирую второй регистр модбас
   if(parameter->getType() == TYPE_DOUBLE_REGISTER) {
     mbMap[parameter->getMbAdr2()] = parameter;
   }
-/*  idMap[parameter._id]        = &parameter;
-  mbMap[parameter.getMbAdr()] = &parameter;
+}
 
-  // Если параметр состоит из 2 регистров, инициализирую второй регистр модбас
-  if(parameter.getType() == 1) {
-    mbMap[parameter.getMbAdr2()] = &parameter;
-  }*/
+
+
+
+//--------------------------------------------------------------------------------------------------------
+// Метод mbMapsSize
+// Возвращает количество элементов в карте mbMap
+//--------------------------------------------------------------------------------------------------------
+uint16_t  MapsOfParameters::mbMapSize (void)
+{
+  return mbMap.size();
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------
+// Метод idMapsSize
+// Возвращает количество элементов в карте idMap
+//--------------------------------------------------------------------------------------------------------
+uint16_t  MapsOfParameters::idMapSize (void)
+{
+  return idMap.size();
 }
 
 
@@ -112,7 +128,6 @@ uint16_t  MapsOfParameters::getMbValue     (uint16_t mbAdr)
    }
   
 }
-
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -253,8 +268,8 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                    min,
                    max,
                    user,
-                   def,
-                   mapsOfParameters
+                   def
+//                   mapsOfParameters
                 )
                 { _flags.type = TYPE_DOUBLE_REGISTER;
                   _modbusAdr2 = modbusAdr2;
@@ -262,6 +277,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _min2 = min2;
                   _max2 = max2;
                   _def2 = def2;
+                  mapsOfParameters.putToMaps(this);
                 };
 
 
@@ -331,11 +347,12 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                    min,
                    max,
                    user,
-                   def,
-                   mapsOfParameters
+                   def
+//                   mapsOfParameters
                 )
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
+                  mapsOfParameters.putToMaps(this);
                 };
                 
 
