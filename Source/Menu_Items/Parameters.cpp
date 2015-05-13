@@ -237,7 +237,7 @@ void Parameter::enterHandler (void)
 //========================================================================================================
 
 // Конструктор без параметров
-Parameter2reg::Parameter2reg() { _flags.type  = TYPE_DOUBLE_REGISTER; };
+Parameter2reg::Parameter2reg() { _flags.type  = TYPE_DOUBLE_REGISTER; }
                     
 //--------------------------------------------------------------------------------------------------------
 // Parameter2reg - Конструктор с параметрами
@@ -278,7 +278,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _max2 = max2;
                   _def2 = def2;
                   mapsOfParameters.putToMaps(this);
-                };
+                }
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -317,7 +317,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _min2 = min2;
                   _max2 = max2;
                   _def2 = def2;
-                };
+                }
 
 
 //========================================================================================================
@@ -353,7 +353,7 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
                   mapsOfParameters.putToMaps(this);
-                };
+                }
                 
 
 //--------------------------------------------------------------------------------------------------------
@@ -384,8 +384,9 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 )
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
-                };
+                }
 
 //========================================================================================================
             
-                
+
+

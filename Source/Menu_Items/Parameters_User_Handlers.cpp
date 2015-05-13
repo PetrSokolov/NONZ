@@ -14,7 +14,7 @@ using namespace std;
 //--------------------------------------------------------------------------------------------------------
 void Parameter::decValueHandler(uint16_t x, uint8_t power)
 {
- if(editingValue - x >= _min) {editingValue -= x;} else { editingValue = _max; } 
+ if(editingValue - x >= getMin()) {editingValue -= x;} else { editingValue = getMax(); } 
 }
 
 
@@ -23,7 +23,7 @@ void Parameter::decValueHandler(uint16_t x, uint8_t power)
 //--------------------------------------------------------------------------------------------------------
 void Parameter::incValueHandler (uint16_t x, uint8_t power)
 {
- if(editingValue + x <= _max) {editingValue += x;} else { editingValue = _min; } 
+ if(editingValue + x <= getMax() ) {editingValue += x;} else { editingValue = getMin(); } 
 }
 
 
@@ -61,6 +61,7 @@ void DecoratorCalibrated::decValueHandler(uint16_t x, uint8_t power)
 void DecoratorCalibrated::incValueHandler (uint16_t x, uint8_t power)
 {
   _parameter->incValueHandler(x, power);
+//  editingValue +=1;
 }
 
 

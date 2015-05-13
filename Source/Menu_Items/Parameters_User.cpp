@@ -101,14 +101,14 @@ Parameter2reg   par3  ( 5,                // _id        - Идентификат
                       21, 3333,           // _def,_def2 - Значение по умолчанию
                       mapsOfParameters);  //            - Объект, обслуживающий карты параметров
 
-DecoratorCalibrated par5 ( mapsOfParameters,  new Parameter2reg( 6,                // _id        - Идентификатор параметра. Для привязки к FRAM
+DecoratorCalibrated calibratedParameter ( mapsOfParameters,  new Parameter2reg( 6,                // _id        - Идентификатор параметра. Для привязки к FRAM
                       206,                // _menu      - Идентификатор меню.
                       "Декорированый параметр",   //_text       - Тестовая информация
                       262,263,            // _modbusAdr2,_modbusAdr	- Адрес модбас
                       123,456,            // _value,_value2 - Значение параметра
                       1,                  // _rw        - Разрешение на запись
                       0,0,                // _min,_min2 - Минимальное значение
-                      0x0000,0x0FFF,      // _max,_max2 - Максимальное значение
+                      0x00FF,0x0FFF,      // _max,_max2 - Максимальное значение
                       1,                  // _user      - Доступ в режиме пользователя
                       0, 1234) );        // _def,_def2 - Значение по умолчанию
 

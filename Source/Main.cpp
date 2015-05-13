@@ -162,6 +162,14 @@ tmp32_4 = mapsOfParameters.getIdValue(4);
 tmp32_5 = mapsOfParameters.getIdValue(5);
 tmp32_6 = mapsOfParameters.getIdValue(6);
 
+
+calibratedParameter.setCalibrating();
+calibratedParameter.startEditing();
+calibratedParameter.incValueHandler(1, 0);
+calibratedParameter.endEditing();
+tmp32_1 = calibratedParameter.getEditingValue();
+tmp32_2 = calibratedParameter.getValue();
+
   pwmDeathTime.startEditing();
   pwmDeathTime.incValueHandler(1,0);
   pwmDeathTime.incValueHandler(2,0);

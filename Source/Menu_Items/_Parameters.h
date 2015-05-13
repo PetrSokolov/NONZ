@@ -330,13 +330,15 @@ protected:
 //=================================================================================================
 class DecoratorCalibrated : public Decorator {
 public:
-    // Конструктор с параметрами
+
+  // Конструктор с параметрами
   DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter ) : Decorator( parameter )
   {
     mapsOfParameters.putToMaps(this);
 	}
 
 // Переопределение методов под данный тип параметра
+
   // Методы, возвращающие значение параметра
   virtual inline uint32_t getValue  (void)           { return _parameter->getValue(); }    // Возвращает значение параметра
   virtual inline uint32_t getValue1 (void)           { return _parameter->getValue1(); }   // Возвращает значение параметра1. Заготовка для параметра из 2 регистров
@@ -345,6 +347,7 @@ public:
   virtual inline void     setValue  (uint32_t value) { _parameter->setValue  (value); }    // Устанавливает значение параметра
   virtual inline void     setValue1 (uint16_t value) { _parameter->setValue1 (value); }    // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
   virtual inline void     setValue2 (uint16_t value) { _parameter->setValue2 (value); }    // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
+
   // Методы, возвращающие атрибуты
   virtual inline uint16_t getType   (void)           { return _parameter->getType(); }     // Возвращает тип параметра
   virtual inline uint16_t getId     (void)           { return _parameter->getId(); }       // Возвращает id параметра
@@ -352,22 +355,27 @@ public:
   virtual inline uint16_t getMbAdr2 (void)           { return _parameter->getMbAdr2(); }   // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
   virtual inline uint32_t getMin    (void)           { return _parameter->getMin(); }      // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _parameter->getMax(); }      // Возвращает максимальное значение параметра
+
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { _parameter->startEditing(); }       // Начало редактирования параметра
   virtual inline void endEditing    (void)           { _parameter->endEditing();   }       // Завершение редактирования параметра. С последующей командой на сохранение.
   virtual inline void exitEditing   (void)           { _parameter->exitEditing();  }       // Выход из редактирования параметра (без сохранения результата)
-  virtual inline void incValueHandler(uint16_t x, uint8_t power);           // Инкремент параметра
-  virtual inline void decValueHandler(uint16_t x, uint8_t power);           // Декремент параметра
-  virtual        void enterHandler  (void);                                  // Обработчик ввода при редактировании параметра
+  virtual 		 void incValueHandler(uint16_t x, uint8_t power);                          // Инкремент параметра
+  virtual 		 void decValueHandler(uint16_t x, uint8_t power);                          // Декремент параметра
+  virtual        void enterHandler  (void);                                                // Обработчик ввода при редактировании параметра
   virtual inline uint32_t getEditingValue(void)      { return _parameter->getEditingValue(); }// 
 
-          inline void setCalibrating(void)           { _calibrating = 1; }                  // Включить режим калибровки
-          inline void clrCalibrating(void)           { _calibrating = 0; }                  // Выключить режим калибровки
+
+
+  // Методы класса DecoratorCalibrated
+          inline void setCalibrating(void)           { _calibrating = 1; }                 // Включить режим калибровки
+          inline void clrCalibrating(void)           { _calibrating = 0; }                 // Выключить режим калибровки
 private:
-//  Parameter*  _parameter;       // Декорируемый объект
-  float    _autocalibrValue; // Калибровочный коэффициент. Вычисленный автоматически.
-  float    _calibratingValue;// Значение расчитанного калибровочного коэффициента
-  uint8_t  _calibrating;     // Статус калибровки. 0-нет, 1-включена
+
+// Данные класса DecoratorCalibrated
+  float    _autocalibratingValue;                                                          // Калибровочный коэффициент. Вычисленный автоматически.
+  float    _calibratingValue;                                                              // Значение расчитанного калибровочного коэффициента
+  uint8_t  _calibrating;                                                                   // Статус калибровки. 0-нет, 1-включена
 };
 
 }	// namespace src
