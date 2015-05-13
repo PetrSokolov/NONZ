@@ -478,6 +478,11 @@
               <FileType>8</FileType>
               <FilePath>.\Menu_Items\Parameters.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Parameters_User_Handlers.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Menu_Items\Parameters_User_Handlers.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
