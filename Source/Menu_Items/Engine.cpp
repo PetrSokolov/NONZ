@@ -27,7 +27,7 @@ void MenuEngine::findAvailableElements()
   printf("Method findAvailableElements \n");
   printf("vector = %d \n", _availableElements.size() );
   
-  _availableElements = _mapsOfParameters->findElementsOfMenu("B");
+  _availableElements = _mapsOfParameters->findIndexMenuItems("B");
   
   printf("After find. vector = %d \n", _availableElements.size() );
   
