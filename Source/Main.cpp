@@ -10,6 +10,10 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <stdio.h>
+
+
+
 
 
 
@@ -177,7 +181,7 @@ tmp32_2 = calibratedParameter.getValue();
   pwmDeathTime.decValueHandler(2,0);
   pwmDeathTime.endEditing();
 
-  
+
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);

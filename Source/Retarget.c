@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <rt_misc.h>
+#include "stm32f10x.h"
 
 #pragma import(__use_no_semihosting_swi)
 
@@ -27,6 +28,7 @@ FILE __stdin;
 
 int fputc(int ch, FILE *f) {
  // return (sendchar(ch));
+  return ITM_SendChar(ch);
 }
 
 int fgetc(FILE *f) {
@@ -36,7 +38,7 @@ int fgetc(FILE *f) {
 
 int ferror(FILE *f) {
   /* Your implementation of ferror */
-  return EOF;
+//  return EOF;
 }
 
 
@@ -46,5 +48,5 @@ void _ttywrch(int ch) {
 
 
 void _sys_exit(int return_code) {
-  while (1);    /* endless loop */
+//  while (1);    /* endless loop */
 }
