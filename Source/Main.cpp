@@ -5,14 +5,13 @@
 #include ".\_UART\_UART.h"
 #include ".\_AnalogSensors\_AnalogSensors.h"
 #include "_PWM\_PWM.h"
+#include ".\Menu_Items\_Engine.h"
 #include ".\Menu_Items\_Parameters.h"
 #include ".\Menu_Items\__Parameters_User.h"
 #include <vector>
 #include <map>
 #include <string>
 #include <stdio.h>
-
-
 
 
 
@@ -34,10 +33,16 @@ AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
 AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
 
+MenuEngine menuEngine( &mapsOfParameters );
+
 string str1 ("First string");
 string str2 ("Second string");
 string str3;
 
+
+//---------------------------------------------------------------------------------------------------------
+// Создание временных переменных. После отладки удалить.
+//---------------------------------------------------------------------------------------------------------
 uint16_t tmp_mbSize, tmp_idSize;
 uint32_t tmp32_1, tmp32_2, tmp32_3, tmp32_4, tmp32_5, tmp32_6;
 uint32_t tmp32_256, tmp32_257, tmp32_258, tmp32_259, tmp32_260, tmp32_261, tmp32_262, tmp32_263;
@@ -166,21 +171,17 @@ tmp32_4 = mapsOfParameters.getIdValue(4);
 tmp32_5 = mapsOfParameters.getIdValue(5);
 tmp32_6 = mapsOfParameters.getIdValue(6);
 
-
+/*
+tmp32_1 = calibratedParameter.getValue();
 calibratedParameter.setCalibrating();
 calibratedParameter.startEditing();
 calibratedParameter.incValueHandler(1, 0);
 calibratedParameter.endEditing();
-tmp32_1 = calibratedParameter.getEditingValue();
-tmp32_2 = calibratedParameter.getValue();
+tmp32_2 = calibratedParameter.getEditingValue();
+tmp32_3 = calibratedParameter.getValue();
+*/
 
-  pwmDeathTime.startEditing();
-  pwmDeathTime.incValueHandler(1,0);
-  pwmDeathTime.incValueHandler(2,0);
-  pwmDeathTime.incValueHandler(3,0);
-  pwmDeathTime.decValueHandler(2,0);
-  pwmDeathTime.endEditing();
-
+menuEngine.findAvailableElements();
 
   pwm.setValue (0.2);
   pwm.setValue (0.4);

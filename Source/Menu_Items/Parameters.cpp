@@ -9,9 +9,15 @@
 //#####################################################################################
 
 #include "_Parameters.h"
+#include "__Parameters_User.h"
+
 #include "stdint.h"
-//#include <stdio.h>
+#include <stdio.h>
 #include <map>
+#include <vector>
+#include <string>
+#include <algorithm>
+
 
 using namespace src;
 using namespace std;
@@ -30,12 +36,12 @@ uint32_t  Parameter::editingValue;    // Статическая переменн
 //--------------------------------------------------------------------------------------------------------
 void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить ссылку на объект в карты  
 {
-  idMap[parameter->getId()]    = parameter;
-  mbMap[parameter->getMbAdr()] = parameter;
+  _idMap[parameter->getId()]    = parameter;
+  _mbMap[parameter->getMbAdr()] = parameter;
 
   // Если параметр состоит из 2 регистров, инициализирую второй регистр модбас
   if(parameter->getType() == TYPE_DOUBLE_REGISTER) {
-    mbMap[parameter->getMbAdr2()] = parameter;
+    _mbMap[parameter->getMbAdr2()] = parameter;
   }
 }
 
@@ -48,7 +54,7 @@ void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить с�
 //--------------------------------------------------------------------------------------------------------
 uint16_t  MapsOfParameters::mbMapSize (void)
 {
-  return mbMap.size();
+  return _mbMap.size();
 }
 
 
@@ -59,7 +65,7 @@ uint16_t  MapsOfParameters::mbMapSize (void)
 //--------------------------------------------------------------------------------------------------------
 uint16_t  MapsOfParameters::idMapSize (void)
 {
-  return idMap.size();
+  return _idMap.size();
 }
 
 
@@ -72,8 +78,8 @@ Parameter*  MapsOfParameters::getMbParameter (uint16_t mbAdr)
 {
   Parameter* parameterPointer;
   map<uint16_t, Parameter*>::iterator i;
-  i = mbMap.find(mbAdr);
-  if(i == mbMap.end()){
+  i = _mbMap.find(mbAdr);
+  if(i == _mbMap.end()){
     // Такого адреса нет в таблице
     parameterPointer = 0;
   }
@@ -91,8 +97,8 @@ Parameter*  MapsOfParameters::getIdParameter (uint16_t id)
 {
   Parameter* parameterPointer;
   map<uint16_t, Parameter*>::iterator i;
-  i = idMap.find(id);
-  if(i == idMap.end()){
+  i = _idMap.find(id);
+  if(i == _idMap.end()){
     // Такого адреса нет в таблице
     parameterPointer = 0;
   }
@@ -110,8 +116,8 @@ uint16_t  MapsOfParameters::getMbValue     (uint16_t mbAdr)
 {
   Parameter* parameterPointer;
   map<uint16_t, Parameter*>::iterator i;
-  i = mbMap.find(mbAdr);
-  if(i == mbMap.end()){
+  i = _mbMap.find(mbAdr);
+  if(i == _mbMap.end()){
     // Такого идентификатора не существует
     // Разобраться и вставить try - throw - catch
     return 0;
@@ -139,8 +145,8 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 {
   Parameter* parameterPointer;
   map<uint16_t, Parameter*>::iterator i;
-  i = idMap.find(id);
-    if(i == idMap.end()){
+  i = _idMap.find(id);
+    if(i == _idMap.end()){
       // Такого идентификатора не существует
       // Разобраться и вставить try - throw - catch
       return 0;
@@ -151,6 +157,62 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 }
 
 
+
+//--------------------------------------------------------------------------------------------------------
+// Методы поиска в контейнерах
+// Ищет элементы, содержащие индекс меню index (пока так)
+//--------------------------------------------------------------------------------------------------------
+//void myfunction (int i) {  // function:
+//  printf("foreach  element = %d", i);
+//}
+void findIndexString(pair<const uint16_t, Parameter*>& pair) // could be a class static method as well
+{
+  char* stringPosition;
+  uint16_t stringLenth;
+  
+  printf("element id = %d,  ", pair.first);
+  printf("Value = %#X \n", pair.second->getValue());
+
+  stringLenth = strlen(pair.second->getMenu());
+
+    printf("finding ""B"" at      %#X...\n", pair.second->getMenu());
+  
+  stringPosition = strstr (pair.second->getMenu(),"B.1");
+
+    printf("symbolPosition =      %#X \n", stringPosition);
+    printf("strlenth is           %d \n", stringLenth);
+  
+  if(stringPosition)  // Символ найден
+  {
+    printf("find element with B, id = %d, position = %#X \n", pair.first, stringPosition);
+  }
+    printf("\n");
+}
+vector<Parameter> MapsOfParameters::findElementsOfMenu (string index)
+{
+  vector<Parameter> elements;
+  vector<int> numbers;
+  
+  numbers.push_back(1);
+  numbers.push_back(3);
+  numbers.push_back(5);
+  
+  for_each(_idMap.begin(), _idMap.end(), findIndexString);
+
+  elements.push_back(par1);
+  printf(" added par1 \n");
+  elements.push_back(par2);
+  printf(" added par2 \n");
+  elements.push_back(pwmDeathTime);
+  printf(" added pwmDeathTime \n");
+
+  return elements;
+}
+
+
+//--------------------------------------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------------------------------------
 void MapsOfParameters::init()
 {
   // Инициализация параметров (сделать из FRAM)
@@ -168,7 +230,7 @@ void MapsOfParameters::init()
 // Parameter - Конструктор с параметрами
 //--------------------------------------------------------------------------------------------------------
 Parameter::Parameter(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -200,7 +262,7 @@ Parameter::Parameter(  uint16_t   id,
 // Parameter - Конструктор с параметрами. Без записи в карты
 //--------------------------------------------------------------------------------------------------------
 Parameter::Parameter(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -244,7 +306,7 @@ Parameter2reg::Parameter2reg() { _flags.type  = TYPE_DOUBLE_REGISTER; }
 // Parameter2reg - Конструктор с параметрами
 //--------------------------------------------------------------------------------------------------------
 Parameter2reg::Parameter2reg(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   modbusAdr2,
@@ -286,7 +348,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
 // Parameter2reg - Конструктор с параметрами. Без записи в карты
 //--------------------------------------------------------------------------------------------------------
 Parameter2reg::Parameter2reg(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   modbusAdr2,
@@ -327,7 +389,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
 
 // Конструктор с параметрами
 ParameterFlt::ParameterFlt(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -361,7 +423,7 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
 // ParameterFlt - Конструктор с параметрами. Без записи в карты
 //--------------------------------------------------------------------------------------------------------
 ParameterFlt::ParameterFlt(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,

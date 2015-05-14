@@ -25,8 +25,9 @@ class MenuEngine{
     // Конструктор с параметрами
     MenuEngine(MapsOfParameters* mapsOfParameters)  { _mapsOfParameters = mapsOfParameters; }
   
+    void  findAvailableElements(); // Формирует список доступных элементов меню. На текущем уровне.
+
 	protected:
-    void              getAvailableElements(); // Формирует список доступных элементов меню. На текущем уровне.
     MapsOfParameters* _mapsOfParameters;      // Агрегация объекта, содержащего карты
     vector<Parameter> _availableElements;     // Список доступных элементов меню. На текущем уровне.
 		long long       	M;	                    // Состояние автомата меню

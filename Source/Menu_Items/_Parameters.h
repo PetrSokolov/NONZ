@@ -14,6 +14,8 @@
 #include "stdint.h"
 #include "math.h"
 #include <map>
+#include <vector>
+#include <string>
 
 
 #ifdef __cplusplus
@@ -36,16 +38,25 @@ class Parameter;
 class MapsOfParameters{
   public:
     void putToMaps (Parameter* parameter);      // Положить ссылку на объект в карты
+  // Методы атрибутов контейнеров
     uint16_t   mbMapSize      (void);           // Возвращает количество элементов в карте mbMap
     uint16_t   idMapSize      (void);           // Возвращает количество элементов в карте idMap
+
+  // Методы значений контейнеров
     Parameter* getMbParameter (uint16_t mbAdr); // По адресу ModBus возвращает указатель на параметр
     Parameter* getIdParameter (uint16_t id);    // По идентификатору ID возвращает указатель на параметр
     uint16_t   getMbValue     (uint16_t mbAdr); // По адресу ModBus возвращает значение параметра (заданного регистра регистра)
     uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
-    void init();                                // Инициализация карт
+
+  // Методы поиска в контейнерах
+    vector<Parameter> findElementsOfMenu (string index);
   
-    map<uint16_t, Parameter*> idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
-    map<uint16_t, Parameter*> mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
+    void init();                                // Инициализация карт
+
+  protected:
+    
+    map<uint16_t, Parameter*> _idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
+    map<uint16_t, Parameter*> _mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
 };
   
 
@@ -69,7 +80,7 @@ class Parameter{
   
     // Конструктор с параметрами
     Parameter(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -83,7 +94,7 @@ class Parameter{
 
    // Конструктор с параметрами. Без записи в карты
     Parameter(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -95,8 +106,8 @@ class Parameter{
              );
 
 //  protected:
-     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
-     uint32_t  _menu;      // Идентификатор меню.
+/*     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
+     char*     _menu;      // Идентификатор меню.
      char*     _text;      // Тестовая информация
      uint16_t  _modbusAdr; // Адрес модбас
      uint16_t  _value;     // Значение параметра
@@ -110,7 +121,7 @@ class Parameter{
        uint8_t rw    :1;   // Разрешение на запись
        uint8_t user  :1;   // Доступ в режиме пользователя
        }_flags;            // Флаги дополнительных атрибутов
-
+*/
 // Интерфейс работы с данными. В зависимости от типа данных.
 // Объявляются стандартные методы (виртуально). Определяются при инициализации, в зависимости от размера параметра (16 или 32 бит)
   // Методы, возвращающие значение параметра
@@ -128,6 +139,7 @@ class Parameter{
   virtual inline uint16_t getMbAdr2 (void)           { return _modbusAdr; }  // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
   virtual inline uint32_t getMin    (void)           { return _min; }        // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _max; }        // Возвращает максимальное значение параметра
+  virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
 
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { editingValue = _value; }     // Начало редактирования параметра
@@ -141,6 +153,24 @@ class Parameter{
 
   // Перегрузка операторов
   inline Parameter & operator = (const Parameter & x);
+
+  // Поле данных
+//  protected:
+     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
+     char*     _menu;      // Идентификатор меню.
+     char*     _text;      // Тестовая информация
+     uint16_t  _modbusAdr; // Адрес модбас
+     uint16_t  _value;     // Значение параметра
+     uint16_t  _min;       // Минимальное значение
+     uint16_t  _max;       // Максимальное значение
+     uint16_t  _def;       // Значение по умолчанию
+     static uint32_t  editingValue;     // Переменная, используемая при редактировании параметра
+     
+     struct {
+       uint8_t type  :5;   // Тип параметра. Определяется в конструкторе. 0-Parameter, 1-Parameter2reg, 2-ParameterFlt, 3-резерв
+       uint8_t rw    :1;   // Разрешение на запись
+       uint8_t user  :1;   // Доступ в режиме пользователя
+       }_flags;            // Флаги дополнительных атрибутов
 
 };
 
@@ -196,7 +226,7 @@ public:
   
     // Конструктор с параметрами
     Parameter2reg(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   modbusAdr2,
@@ -215,7 +245,7 @@ public:
 
    // Конструктор с параметрами. Без записи в карты
     Parameter2reg(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   modbusAdr2,
@@ -230,14 +260,18 @@ public:
                 uint16_t   def,
                 uint16_t   def2
                 );
-                
+
+  // Поле с дополнительными параметрами              
   uint16_t   _modbusAdr2;
   uint16_t   _value2;
   uint16_t   _min2;
   uint16_t   _max2;
   uint16_t   _def2;
 
+
 // Переопределение методов под данный тип параметра
+
+  // Методы, возвращающие значение параметра
  virtual inline uint32_t getValue  (void)           { return BYTES_TO_LONG(_value2, _value); }   // Возвращает значение параметра
  virtual inline uint32_t getValue1 (void)           { return _value; }                           // Возвращает значение параметра.
  virtual inline uint32_t getValue2 (void)           { return _value2; }                          // Возвращает значение параметра.
@@ -247,6 +281,12 @@ public:
  virtual inline uint16_t getMbAdr2 (void)           { return _modbusAdr2; }                      // Возвращает дополнительный модбас адрес параметра. Заготовка для 32бит параметра
  virtual inline uint32_t getMin    (void)           { return BYTES_TO_LONG(_min2, _min); }       // Возвращает минимальное значение параметра
  virtual inline uint32_t getMax    (void)           { return BYTES_TO_LONG(_max2, _max); }       // Возвращает максимальное значение параметра
+
+  // Методы, используемые при редактировании параметра через меню
+  virtual inline void startEditing  (void)           { editingValue = BYTES_TO_LONG(_value2, _value); }     // Начало редактирования параметра
+  virtual inline void endEditing    (void)           { setValue ( editingValue ); } // Завершение редактирования параметра. С последующей командой на сохранение.
+  virtual inline void exitEditing   (void)           { }                     // Выход из редактирования параметра (без сохранения результата)
+
 };
 
 
@@ -263,7 +303,7 @@ public:
   
     // Конструктор с параметрами
     ParameterFlt(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -278,7 +318,7 @@ public:
 
                 // Конструктор с параметрами. Без записи в карты
     ParameterFlt(  uint16_t   id,
-                uint32_t   menu,
+                char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
                 uint16_t   value,
@@ -355,6 +395,7 @@ public:
   virtual inline uint16_t getMbAdr2 (void)           { return _parameter->getMbAdr2(); }   // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
   virtual inline uint32_t getMin    (void)           { return _parameter->getMin(); }      // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _parameter->getMax(); }      // Возвращает максимальное значение параметра
+  virtual inline char*    getMenu   (void)           { return _parameter->getMenu(); }       // Возвращает указатель на индекс меню
 
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { _parameter->startEditing(); }       // Начало редактирования параметра

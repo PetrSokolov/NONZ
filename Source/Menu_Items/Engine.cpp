@@ -11,5 +11,25 @@
 //#include "..\Menu_Items\_Engine.h"
 #include "_Engine.h"
 #include <vector>
+#include <stdio.h>
 
 using namespace src;
+
+
+
+//=====================================================================================
+// Метод getAvailableElements
+// Производит поиск доступных элементов меню на данном уровне
+//=====================================================================================
+void MenuEngine::findAvailableElements()
+{
+  
+  printf("Method findAvailableElements \n");
+  printf("vector = %d \n", _availableElements.size() );
+  
+  _availableElements = _mapsOfParameters->findElementsOfMenu("B");
+  
+  printf("After find. vector = %d \n", _availableElements.size() );
+  
+}
+
