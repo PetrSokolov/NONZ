@@ -38,11 +38,26 @@ enum {
 };
   
 //=================================================================================================
-//  Класс, определяющий настроечный параметр из 1 регистра.  (size = 0 - 16 бит)
+//  Класс, определяющий группу настроечных параметров
+//  Пустой элемент меню, работает только на отображение
 //=================================================================================================
+class GroupParameter : public IMeniItem{
+  public:
+      // Конструктор с параметрами    
+    GroupParameter( uint16_t   id,
+                    char*      menu,
+                    char*      text,
+                    MapsOfParameters& mapsOfParameters
+                  );
+
+    // Переопределение методов интерфейса  IMeniItem
+    virtual inline uint16_t getId     (void)           { return _id; }         // Возвращает id параметра
+    virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
+    virtual inline char*    getText   (void)           { return _text; }       // Возвращает указатель на текст меню
+};
  
 // Класс настроечного параметра. В ПЗУ хранится только текст (const char*)
-class Parameter{
+class Parameter : public IMeniItem{
   public:
     // Конструктор без параметров
     Parameter() { }
@@ -74,23 +89,6 @@ class Parameter{
                 uint16_t   def
              );
 
-//  protected:
-/*     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
-     char*     _menu;      // Идентификатор меню.
-     char*     _text;      // Тестовая информация
-     uint16_t  _modbusAdr; // Адрес модбас
-     uint16_t  _value;     // Значение параметра
-     uint16_t  _min;       // Минимальное значение
-     uint16_t  _max;       // Максимальное значение
-     uint16_t  _def;       // Значение по умолчанию
-     static uint32_t  editingValue;     // Переменная, используемая при редактировании параметра
-     
-     struct {
-       uint8_t type  :5;   // Тип параметра. Определяется в конструкторе. 0-Parameter, 1-Parameter2reg, 2-ParameterFlt, 3-резерв
-       uint8_t rw    :1;   // Разрешение на запись
-       uint8_t user  :1;   // Доступ в режиме пользователя
-       }_flags;            // Флаги дополнительных атрибутов
-*/
 // Интерфейс работы с данными. В зависимости от типа данных.
 // Объявляются стандартные методы (виртуально). Определяются при инициализации, в зависимости от размера параметра (16 или 32 бит)
   // Методы, возвращающие значение параметра
@@ -103,12 +101,15 @@ class Parameter{
   virtual inline void     setValue2 (uint16_t value) { _value = value; }     // Устанавливает значение параметра. Заготовка для параметра из 2 регистров
   // Методы, возвращающие атрибуты
   virtual inline uint16_t getType   (void)           { return _flags.type; } // Возвращает тип параметра
-  virtual inline uint16_t getId     (void)           { return _id; }         // Возвращает id параметра
   virtual inline uint16_t getMbAdr  (void)           { return _modbusAdr; }  // Возвращает модбас адрес параметра
   virtual inline uint16_t getMbAdr2 (void)           { return _modbusAdr; }  // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
   virtual inline uint32_t getMin    (void)           { return _min; }        // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _max; }        // Возвращает максимальное значение параметра
-  virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
+
+  // Переопределение методов интерфейса  IMeniItem
+    virtual inline uint16_t getId     (void)           { return _id; }         // Возвращает id параметра
+    virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
+    virtual inline char*    getText   (void)           { return _text; }       // Возвращает указатель на текст меню
 
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { editingValue = _value; }     // Начало редактирования параметра
@@ -124,10 +125,11 @@ class Parameter{
   inline Parameter & operator = (const Parameter & x);
 
   // Поле данных
-//  protected:
-     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
-     char*     _menu;      // Идентификатор меню.
-     char*     _text;      // Тестовая информация
+  protected:
+//     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
+//     char*     _menu;      // Идентификатор меню.
+//     char*     _text;      // Тестовая информация
+
      uint16_t  _modbusAdr; // Адрес модбас
      uint16_t  _value;     // Значение параметра
      uint16_t  _min;       // Минимальное значение
@@ -152,10 +154,14 @@ class Parameter{
 //---------------------------------------------------------------------------
 inline Parameter & Parameter :: operator = (const Parameter & x)
 {
+//  setId   ( x.getId()   );
+//  setMenu ( x.getMenu() );
+//  setText ( x.getText() );
   _id        = x._id;
   _menu      = x._menu;
-  _modbusAdr = x._modbusAdr;
   _text      = x._text;
+
+  _modbusAdr = x._modbusAdr;
   _value     = x._value;
   _min       = x._min;
   _max       = x._max;
@@ -172,14 +178,14 @@ inline Parameter & Parameter :: operator = (const Parameter & x)
 //---------------------------------------------------------------------------
 // Operators: "==", "!=", "<", ">", "<=", ">=", "&&", "||"
 //---------------------------------------------------------------------------
-inline bool operator == (const Parameter &x, const Parameter& y)     { return (x._value == y._value); }
-inline bool operator != (const Parameter &x, const Parameter& y)     { return (x._value != y._value); }
-inline bool operator <  (const Parameter &x, const Parameter& y)     { return (x._value <  y._value); }
-inline bool operator >  (const Parameter &x, const Parameter& y)     { return (x._value >  y._value); }
-inline bool operator <= (const Parameter &x, const Parameter& y)     { return (x._value <= y._value); }
-inline bool operator >= (const Parameter &x, const Parameter& y)     { return (x._value >= y._value); }
-inline bool operator && (const Parameter &x, const Parameter& y)     { return (x._value && y._value); }
-inline bool operator || (const Parameter &x, const Parameter& y)     { return (x._value || y._value); }
+inline bool operator == (Parameter &x, Parameter& y)     { return (x.getValue() == y.getValue()); }
+inline bool operator != (Parameter &x, Parameter& y)     { return (x.getValue() != y.getValue()); }
+inline bool operator <  (Parameter &x, Parameter& y)     { return (x.getValue() <  y.getValue()); }
+inline bool operator >  (Parameter &x, Parameter& y)     { return (x.getValue() >  y.getValue()); }
+inline bool operator <= (Parameter &x, Parameter& y)     { return (x.getValue() <= y.getValue()); }
+inline bool operator >= (Parameter &x, Parameter& y)     { return (x.getValue() >= y.getValue()); }
+inline bool operator && (Parameter &x, Parameter& y)     { return (x.getValue() && y.getValue()); }
+inline bool operator || (Parameter &x, Parameter& y)     { return (x.getValue() || y.getValue()); }
 
 
 
@@ -335,16 +341,13 @@ protected:
 //=================================================================================================
 //  Декоратор класса.
 //  Конкретная реализация Декоратора. Переопределение методов класса.
-//  Функция калибровки
+//  Изменяет поведение объекта под Функция калибровки по записи "1"
 //=================================================================================================
 class DecoratorCalibrated : public Decorator {
 public:
 
   // Конструктор с параметрами
-  DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter ) : Decorator( parameter )
-  {
-    mapsOfParameters.putToMaps(this);
-	}
+  DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter );
 
 // Переопределение методов под данный тип параметра
 
@@ -359,12 +362,15 @@ public:
 
   // Методы, возвращающие атрибуты
   virtual inline uint16_t getType   (void)           { return _parameter->getType(); }     // Возвращает тип параметра
-  virtual inline uint16_t getId     (void)           { return _parameter->getId(); }       // Возвращает id параметра
   virtual inline uint16_t getMbAdr  (void)           { return _parameter->getMbAdr(); }    // Возвращает модбас адрес параметра
   virtual inline uint16_t getMbAdr2 (void)           { return _parameter->getMbAdr2(); }   // Возвращает дополнительный модбас адрес параметра. Заготовка для параметра из 2 регистров
   virtual inline uint32_t getMin    (void)           { return _parameter->getMin(); }      // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _parameter->getMax(); }      // Возвращает максимальное значение параметра
+
+    // Методы интерфейса  IMeniItem
+  virtual inline uint16_t getId     (void)           { return _parameter->getId(); }         // Возвращает id параметра
   virtual inline char*    getMenu   (void)           { return _parameter->getMenu(); }       // Возвращает указатель на индекс меню
+  virtual inline char*    getText   (void)           { return _parameter->getText(); }       // Возвращает указатель на текст меню
 
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { _parameter->startEditing(); }       // Начало редактирования параметра

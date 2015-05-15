@@ -24,13 +24,15 @@
 using namespace src;
 using namespace std;
 
+
 //========================================================================================================
 //                                        Класс MapsOfParameters
+//  Работает через интерфейс IMeniItem
 //========================================================================================================
   
 //--------------------------------------------------------------------------------------------------------
 // Метод PutToMaps
-// Положить настроечный объект-параметр в карты idMap и mbMap по идентификатору и ModBus адресу
+// Положить указатель на настроечный объект-параметр в карты idMap и mbMap по идентификатору и ModBus адресу
 //--------------------------------------------------------------------------------------------------------
 void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить ссылку на объект в карты  
 {
@@ -43,7 +45,14 @@ void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить с�
   }
 }
 
-
+//--------------------------------------------------------------------------------------------------------
+// Метод PutToMenu
+// Положить указатель на объект в вектор элементов меню
+//--------------------------------------------------------------------------------------------------------
+void  MapsOfParameters::putToMenu (IMeniItem* meniItem) // Положить ссылку на объект в карты  
+{
+  _menuIdVector.push_back( meniItem );
+}
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -160,70 +169,52 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 // Методы поиска в контейнерах
 // Ищет элементы, содержащие индекс меню index (пока так)
 //--------------------------------------------------------------------------------------------------------
-//void myfunction (int i) {  // function:
-//  printf("foreach  element = %d", i);
-//}
-/*void findIndexString(pair<const uint16_t, Parameter*>& pair) // could be a class static method as well
-{
-  char* stringPosition;
-  uint16_t stringLenth;
-  
-  printf("element id = %d,  ", pair.first);
-  printf("Value = %#X \n", pair.second->getValue());
-
-  stringLenth = strlen(pair.second->getMenu());
-
-    printf("finding ""B"" at      %#X...\n", pair.second->getMenu());
-  
-  stringPosition = strstr (pair.second->getMenu(),"B.1");
-
-    printf("symbolPosition =      %#X \n", stringPosition);
-    printf("strlenth is           %d \n", stringLenth);
-  
-  if(stringPosition)  // Символ найден
-  {
-    printf("find element with B, id = %d, position = %#X \n", pair.first, stringPosition);
-  }
-    printf("\n");
-}
-*/
 
 // Метод поиска элементов меню (параметров) по индексу. Формирует вектор с указателями на параметры-объекты, удовлетворяющие заданному уровню меню (index)
-vector<Parameter> MapsOfParameters::findIndexMenuItems (string index)
+vector<IMeniItem*> MapsOfParameters::findIndexMenuItems (string index)
 {
-  char* stringPosition;
+//  char* stringPosition;
+  char* stringMenu;
   uint16_t stringLenth;
-  uint16_t j, n;
-  vector<Parameter> elements;
-  vector<int> numbers;
-  map<uint16_t, Parameter*>::iterator i;
+  uint16_t i, j, n;
+  vector<IMeniItem*> elements;
+//  vector<int> numbers;
+//  map<uint16_t, Parameter*>::iterator i;
   
-  numbers.push_back(1);
-  numbers.push_back(3);
-  numbers.push_back(5);
+//  numbers.push_back(1);
+//  numbers.push_back(3);
+//  numbers.push_back(5);
   
 //  for_each(_idMap.begin(), _idMap.end(), findIndexString);
-  n = _idMap.size();
-  i = _idMap.begin();
+  n = _menuIdVector.size();
+//  i = _menuIdVector.begin();
+
+    printf("size of _menuIdVector  = %d,\n", n);
+
   for (j=0; j < n; j++){
-    stringPosition = i->second->getMenu();
+    stringMenu = _menuIdVector[j]->getMenu();
+    printf( "element id = %d,  ", _menuIdVector[j]->getId() );
+    printf( "menu = %s \n", _menuIdVector[j]->getMenu() );
+
+  /*    stringPosition = i->second->getMenu();
 
     printf("element id = %d,  ", i->first);
     printf("Value = %#X \n", i->second->getValue());
 
   stringLenth = strlen(i->second->getMenu());
 
-    printf("finding ""B.1"" at      %#X...\n", i->second->getMenu());
+    printf("finding ""B.1"" at      %#X...\n", (unsigned int)i->second->getMenu());
   
   stringPosition = strstr (i->second->getMenu(),"B.1");
 
-    printf("symbolPosition =      %#X \n", stringPosition);
+    printf("symbolPosition =      %#X \n", (unsigned int)stringPosition);
     printf("strlenth is           %d \n", stringLenth);
   
   if(stringPosition)  // Символ найден
   {
-    printf("find element with B, id = %d, position = %#X \n", i->first, stringPosition);
-  }
+    elements.push_back(i->second);
+    printf("find element with B.1, id = %d, position = %#X \n", i->first, (unsigned int)stringPosition);
+  }*/
     printf("\n");
     
     i++;
@@ -237,6 +228,8 @@ vector<Parameter> MapsOfParameters::findIndexMenuItems (string index)
   elements.push_back(pwmDeathTime);
   printf(" added pwmDeathTime \n");
 */
+  printf("After find. IMeniItem elements = %d \n", elements.size() );
+
   return elements;
 }
 

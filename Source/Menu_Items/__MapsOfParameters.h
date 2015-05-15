@@ -22,6 +22,21 @@
 
 using namespace std;
 namespace src{	
+
+//========================================================================================================
+//                                   Интерфейс IMeniItem
+//========================================================================================================
+class IMeniItem{
+  public:
+    virtual inline uint16_t getId     (void) { return 0; }       // Возвращает id параметра
+    virtual inline char*    getMenu   (void) { return 0; }       // Возвращает указатель на индекс меню
+    virtual inline char*    getText   (void) { return 0; }       // Возвращает указатель на текст меню
+
+     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
+     char*     _menu;      // Идентификатор меню.
+     char*     _text;      // Тестовая информация
+};
+
   
 //====================================================================================================
 //  Класс, определяющий организацию настроечных параметров и ModBus регистров. И работу с ними
@@ -31,7 +46,8 @@ namespace src{
 class Parameter;
 class MapsOfParameters{
   public:
-    void putToMaps (Parameter* parameter);      // Положить ссылку на объект в карты
+    void putToMaps (Parameter* parameter);      // Положить указатель на объект в карты параметров
+    void putToMenu (IMeniItem* meniItem);        // Положить указатель на объект в вектор элементов меню
   // Методы атрибутов контейнеров
     uint16_t   mbMapSize      (void);           // Возвращает количество элементов в карте mbMap
     uint16_t   idMapSize      (void);           // Возвращает количество элементов в карте idMap
@@ -43,14 +59,15 @@ class MapsOfParameters{
     uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
 
   // Методы поиска в контейнерах
-    vector<Parameter> findIndexMenuItems (string index);
+  // Поиск и формирования вектора из элементов меню, в которых содержится индекс меню index.
+    vector<IMeniItem*> findIndexMenuItems (string index);
   
     void init();                                // Инициализация карт
 
   protected:
-    
     map<uint16_t, Parameter*> _idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
     map<uint16_t, Parameter*> _mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
+	vector<IMeniItem*>        _menuIdVector;// Вектор элементов меню
 };  
   
 }

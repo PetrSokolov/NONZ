@@ -29,8 +29,8 @@ class MenuEngine{
 
 	protected:
     MapsOfParameters* _mapsOfParameters;      // Агрегация объекта, содержащего карты
-    vector<Parameter> _availableElements;     // Список доступных элементов меню. На текущем уровне.
-		long long       	M;	                    // Состояние автомата меню
+    vector<IMeniItem*> _availableElements;    // Список доступных элементов меню. На текущем уровне.
+		char*             M;	                    // Состояние автомата меню
 		int				        IM;                   	// Индекс листига текущего меню
 
 };

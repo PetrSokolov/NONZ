@@ -23,13 +23,21 @@ using namespace src;
 //=====================================================================================
 void MenuEngine::findAvailableElements()
 {
-  
+  uint16_t size, i;
   printf("Method findAvailableElements \n");
   printf("vector = %d \n", _availableElements.size() );
   
-  _availableElements = _mapsOfParameters->findIndexMenuItems("B");
+  _availableElements = _mapsOfParameters->findIndexMenuItems("B.1");
   
-  printf("After find. vector = %d \n", _availableElements.size() );
+  size = _availableElements.size();
+  printf("After find. IMeniItem vector = %d \n", size );
+  
+  for (i=0; i<size; i++){
+    printf("find Item id= %d  ,", _availableElements[i]->getId() );
+    printf("menu = %s  ,", _availableElements[i]->getMenu() );
+    printf("text = %s \n", _availableElements[i]->getText() );
+  }
+   
   
 }
 

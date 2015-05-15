@@ -483,6 +483,11 @@
               <FileType>8</FileType>
               <FilePath>.\Menu_Items\Parameters_User_Handlers.cpp</FilePath>
             </File>
+            <File>
+              <FileName>MapsOfParameters.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Menu_Items\MapsOfParameters.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

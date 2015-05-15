@@ -25,6 +25,23 @@ using namespace std;
 
 uint32_t  Parameter::editingValue;    // Статическая переменная, используемая при редактировании параметра
 
+//=================================================================================================
+//                                     Класс GroupParameter
+//  Класс, определяющий группу настроечных параметров
+//  Пустой элемент меню, работает только на отображение
+//=================================================================================================
+  // Конструктор с параметрами    
+  GroupParameter::GroupParameter( uint16_t   id,
+                    char*      menu,
+                    char*      text,
+                    MapsOfParameters& mapsOfParameters
+                  )
+                   { _id = id;
+                     _menu = menu;
+                     _text = text;
+                     mapsOfParameters.putToMenu(this);
+                   }
+
 
 //========================================================================================================
 //                                        Класс Parameter
@@ -59,6 +76,7 @@ Parameter::Parameter(  uint16_t   id,
                       _flags.type  = TYPE_SINGLE_REGISTER;
                       _flags.user  = user;
                       mapsOfParameters.putToMaps(this);
+                      mapsOfParameters.putToMenu(this);
                     }
 
 
@@ -136,7 +154,6 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                    max,
                    user,
                    def
-//                   mapsOfParameters
                 )
                 { _flags.type = TYPE_DOUBLE_REGISTER;
                   _modbusAdr2 = modbusAdr2;
@@ -145,6 +162,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _max2 = max2;
                   _def2 = def2;
                   mapsOfParameters.putToMaps(this);
+                  mapsOfParameters.putToMenu(this);
                 }
 
 
@@ -215,11 +233,11 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                    max,
                    user,
                    def
-//                   mapsOfParameters
                 )
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
                   mapsOfParameters.putToMaps(this);
+                  mapsOfParameters.putToMenu(this);
                 }
                 
 
@@ -253,7 +271,18 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                   _power = power;
                 }
 
+
+				
 //========================================================================================================
-            
+//                                        Декоратор класса DecoratorCalibrated
+//  Изменяет поведение объекта под Функция калибровки по записи "1"
+//========================================================================================================
+ 
+  // Конструктор с параметрами
+ DecoratorCalibrated::DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter ) : Decorator( parameter )
+  {
+    mapsOfParameters.putToMaps(this);
+    mapsOfParameters.putToMenu(this);
+  }
 
 
