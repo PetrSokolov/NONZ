@@ -181,6 +181,16 @@ tmp32_2 = calibratedParameter.getEditingValue();
 tmp32_3 = calibratedParameter.getValue();
 */
 
+menuEngine.setMenuValue("A");
+menuEngine.findAvailableElements();
+
+menuEngine.setMenuValue("B");
+menuEngine.findAvailableElements();
+
+menuEngine.setMenuValue("B.1");
+menuEngine.findAvailableElements();
+
+menuEngine.setMenuValue("B.2");
 menuEngine.findAvailableElements();
 
   pwm.setValue (0.2);

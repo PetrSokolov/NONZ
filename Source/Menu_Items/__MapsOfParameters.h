@@ -59,8 +59,8 @@ class MapsOfParameters{
     uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
 
   // Методы поиска в контейнерах
-  // Поиск и формирования вектора из элементов меню, в которых содержится индекс меню index.
-    vector<IMeniItem*> findIndexMenuItems (string index);
+  // Поиск и формирования вектора из элементов меню, в которых содержится индекс меню indexString.
+    vector<IMeniItem*> findIndexMenuItems (char* indexString);
   
     void init();                                // Инициализация карт
 

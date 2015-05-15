@@ -25,13 +25,15 @@ class MenuEngine{
     // Конструктор с параметрами
     MenuEngine(MapsOfParameters* mapsOfParameters)  { _mapsOfParameters = mapsOfParameters; }
   
-    void  findAvailableElements(); // Формирует список доступных элементов меню. На текущем уровне.
+    void findAvailableElements(); // Формирует список доступных элементов меню. На текущем уровне.
+    inline void  setMenuValue(char* m) { _m = m; }
+    inline char* getMenuValue(void)    { return _m; }
 
 	protected:
     MapsOfParameters* _mapsOfParameters;      // Агрегация объекта, содержащего карты
     vector<IMeniItem*> _availableElements;    // Список доступных элементов меню. На текущем уровне.
-		char*             M;	                    // Состояние автомата меню
-		int				        IM;                   	// Индекс листига текущего меню
+		char*             _m;	                    // Состояние автомата меню
+		int				        _im;                   	// Индекс листига текущего меню
 
 };
 	

@@ -170,66 +170,32 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 // Ищет элементы, содержащие индекс меню index (пока так)
 //--------------------------------------------------------------------------------------------------------
 
-// Метод поиска элементов меню (параметров) по индексу. Формирует вектор с указателями на параметры-объекты, удовлетворяющие заданному уровню меню (index)
-vector<IMeniItem*> MapsOfParameters::findIndexMenuItems (string index)
+// Метод поиска элементов меню (параметров) по индексу. Формирует вектор с указателями на параметры-объекты, удовлетворяющие заданному уровню меню (indexString)
+vector<IMeniItem*> MapsOfParameters::findIndexMenuItems (char* indexString)
 {
-//  char* stringPosition;
-  char* stringMenu;
-  uint16_t stringLenth;
-  uint16_t i, j, n;
+  char* stringPosition;
+  uint16_t i, n;
   vector<IMeniItem*> elements;
-//  vector<int> numbers;
-//  map<uint16_t, Parameter*>::iterator i;
   
-//  numbers.push_back(1);
-//  numbers.push_back(3);
-//  numbers.push_back(5);
-  
-//  for_each(_idMap.begin(), _idMap.end(), findIndexString);
   n = _menuIdVector.size();
-//  i = _menuIdVector.begin();
 
-    printf("size of _menuIdVector  = %d,\n", n);
+//    printf("size of _menuIdVector  = %d,\n", n);
 
-  for (j=0; j < n; j++){
-    stringMenu = _menuIdVector[j]->getMenu();
-    printf( "element id = %d,  ", _menuIdVector[j]->getId() );
-    printf( "menu = %s \n", _menuIdVector[j]->getMenu() );
+  for (i=0; i < n; i++){
+//    printf( "element id = %d,  ",              _menuIdVector[i]->getId() );
+//    printf( "menu = %s \n",                    _menuIdVector[i]->getMenu() );
+//    printf("finding ""B.1"" at      %#X...\n", (unsigned int)_menuIdVector[i]->getMenu());
 
-  /*    stringPosition = i->second->getMenu();
-
-    printf("element id = %d,  ", i->first);
-    printf("Value = %#X \n", i->second->getValue());
-
-  stringLenth = strlen(i->second->getMenu());
-
-    printf("finding ""B.1"" at      %#X...\n", (unsigned int)i->second->getMenu());
-  
-  stringPosition = strstr (i->second->getMenu(),"B.1");
-
-    printf("symbolPosition =      %#X \n", (unsigned int)stringPosition);
-    printf("strlenth is           %d \n", stringLenth);
-  
-  if(stringPosition)  // Символ найден
-  {
-    elements.push_back(i->second);
-    printf("find element with B.1, id = %d, position = %#X \n", i->first, (unsigned int)stringPosition);
-  }*/
-    printf("\n");
-    
-    i++;
+    stringPosition = strstr (_menuIdVector[i]->getMenu(),indexString);
+    if(stringPosition)  // Символ найден
+    {
+      elements.push_back(_menuIdVector[i]);
+//      printf("find element with B.1, id = %d, position = %#X \n", _menuIdVector[i]->getId(), (unsigned int)stringPosition);
+    }
+//    printf("\n");
   }
-  
 
-/*  elements.push_back(par1);
-  printf(" added par1 \n");
-  elements.push_back(par2);
-  printf(" added par2 \n");
-  elements.push_back(pwmDeathTime);
-  printf(" added pwmDeathTime \n");
-*/
-  printf("After find. IMeniItem elements = %d \n", elements.size() );
-
+//  printf("After find. IMeniItem elements = %d \n", elements.size() );
   return elements;
 }
 
