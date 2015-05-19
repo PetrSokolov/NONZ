@@ -23,8 +23,9 @@ using namespace std;
 //=========================================================================================================
 
 CTmp cTmp;
-MapsOfParameters mapsOfParameters;
-MenuEngine menuEngine;
+//MapsOfParameters mapsOfParameters;
+
+//MenuEngine menuEngine;
 
 
 //=========================================================================================================
@@ -42,7 +43,7 @@ Parameter par1      ( 1,                  // _id        - Идентификат
                       100,                // _max       - Максимальное значение
                       1,                  // _user      - Доступ в режиме пользователя
                       12,                 // _def       - Значение по умолчанию
-                      mapsOfParameters, menuEngine),  //            - Объект, обслуживающий карты параметров
+                      /*mapsOfParameters,*/ menuEngine),  //            - Объект, обслуживающий карты параметров
  
           par2      ( 2,                  // _id        - Идентификатор параметра. Для привязки к FRAM
                       (char *)"A.1",              // _menu      - Идентификатор меню.
@@ -54,7 +55,7 @@ Parameter par1      ( 1,                  // _id        - Идентификат
                       100,                // _max       - Максимальное значение
                       1,                  // _user      - Доступ в режиме пользователя
                       21,                 // _def       - Значение по умолчанию
-                      mapsOfParameters, menuEngine);  //            - Объект, обслуживающий карты параметров
+                      /*mapsOfParameters,*/ menuEngine);  //            - Объект, обслуживающий карты параметров
 
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ШИМ
@@ -70,9 +71,9 @@ Parameter pwmValue
                       999,                // _max2,_max - Максимальное значение
                       1,                  // _user      - Доступ в режиме пользователя
                       21,                 // _def2,_def - Значение по умолчанию
-                      mapsOfParameters,menuEngine);  //            - Объект, обслуживающий карты параметров
+                      /*mapsOfParameters,*/ menuEngine);  //            - Объект, обслуживающий карты параметров
 
-ParameterFlt pwmDeathTime
+/*ParameterFlt pwmDeathTime
                     ( 4,                  // _id        - Идентификатор параметра. Для привязки к FRAM
                       (char *)"B.1",              // _menu      - Идентификатор меню.
                       (char *)"Death time ШИМ",   //_text       - Тестовая информация
@@ -123,4 +124,5 @@ Parameter par10=par1, par11=par1, par12=par1, par13=par1, par14=par1, par15=par1
 Parameter par20=par1, par21=par1, par22=par1, par23=par1, par24=par1, par25=par1, par26=par1, par27=par1, par28=par1, par29=par1;
 Parameter par30=par1, par31=par1, par32=par1, par33=par1, par34=par1, par35=par1, par36=par1, par37=par1, par38=par1, par39=par1;
 Parameter par40=par1, par41=par1, par42=par1, par43=par1, par44=par1, par45=par1, par46=par1, par47=par1, par48=par1, par49=par1;
-Parameter par50=par1, par51=par1, par52=par1, par53=par1, par54=par1, par55=par1, par56=par1, par57=par1, par58=par1, par59=par1;
+Parameter par50=par1, par51=par1, par52=par1, par53=par1, par54=par1, par55=par1, par56=par1, par57=par1, par58=par1, par59=par1;*/
+

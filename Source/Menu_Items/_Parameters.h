@@ -39,13 +39,28 @@ enum {
   TYPE_FLOAT
 };
  
-//class MapsOfParameters;
+
+//=================================================================================================
+//  Класс, определяющий элемент меню 
+//=================================================================================================
+class MenuItem{
+  public:
+    virtual inline uint16_t getId     (void) { return 0; }       // Возвращает id параметра
+    virtual inline char*    getMenu   (void) { return 0; }       // Возвращает указатель на индекс меню
+    virtual inline char*    getText   (void) { return 0; }       // Возвращает указатель на текст меню
+
+     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
+     char*     _menu;      // Идентификатор меню.
+     char*     _text;      // Тестовая информация
+};
+
+
 
 //=================================================================================================
 //  Класс, определяющий группу настроечных параметров
 //  Пустой элемент меню, работает только на отображение
 //=================================================================================================
-class GroupParameter : public IMenuItem{
+class GroupParameter : public MenuItem{
   public:
       // Конструктор с параметрами    
     GroupParameter( uint16_t   id,
@@ -61,7 +76,7 @@ class GroupParameter : public IMenuItem{
 };
  
 // Класс настроечного параметра. В ПЗУ хранится только текст (const char*)
-class Parameter : public IMenuItem{
+class Parameter : public MenuItem{
   public:
     // Конструктор без параметров
     Parameter() { }
@@ -77,7 +92,7 @@ class Parameter : public IMenuItem{
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters,
+//                MapsOfParameters& mapsOfParameters,
 				MenuEngine& menuEngine
              );
 
@@ -220,7 +235,7 @@ public:
                 uint16_t   user,
                 uint16_t   def,
                 uint16_t   def2,
-                MapsOfParameters& mapsOfParameters,
+//                MapsOfParameters& mapsOfParameters,
 				MenuEngine& menuEngine
                 );
 
@@ -294,7 +309,7 @@ public:
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters,
+//                MapsOfParameters& mapsOfParameters,
                 MenuEngine& menuEngine
                 );
 
@@ -354,7 +369,7 @@ class DecoratorCalibrated : public Decorator {
 public:
 
   // Конструктор с параметрами
-  DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, MenuEngine& menuEngine, Parameter* parameter );
+  DecoratorCalibrated ( /*MapsOfParameters& mapsOfParameters,*/ MenuEngine& menuEngine, Parameter* parameter );
 
 // Переопределение методов под данный тип параметра
 

@@ -20,6 +20,7 @@
 #include <string>
 #include <algorithm>
 
+#include "_Parameters.h"
 
 using namespace src;
 using namespace std;
@@ -45,7 +46,7 @@ void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить с�
   }
 }
 
-
+/*
 //--------------------------------------------------------------------------------------------------------
 // Метод mbMapsSize
 // Возвращает количество элементов в карте mbMap
@@ -162,7 +163,7 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 //--------------------------------------------------------------------------------------------------------
 
 // Метод поиска элементов меню (параметров) по индексу. Формирует вектор с указателями на параметры-объекты, удовлетворяющие заданному уровню меню (indexString)
-/*void MapsOfParameters::findIndexMenuItems (vector<IMenuItem*> &resultVector, char* indexString)
+void MapsOfParameters::findIndexMenuItems (vector<IMenuItem*> &resultVector, char* indexString)
 {
 //  char* stringPosition;
   uint16_t i, n;
@@ -184,7 +185,7 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 
 //  printf("After find. IMenuItem elements = %d \n", elements.size() );
 //  return elements;
-}*/
+}
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -196,5 +197,5 @@ void MapsOfParameters::init()
 //  pwmValue.setValue(12);
 //  pwmDeathTime.setValue(12);
 
-}
+}*/
 

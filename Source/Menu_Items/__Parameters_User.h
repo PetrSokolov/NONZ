@@ -24,14 +24,14 @@
 
 using namespace src;
 
-  extern CTmp cTmp;
-  extern  MapsOfParameters mapsOfParameters;
-  extern  MenuEngine menuEngine;
+//  extern CTmp cTmp;
+//  extern  MapsOfParameters mapsOfParameters;
+//  extern  MenuEngine menuEngine;
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ШИМ
 //-----------------------------------------------------------------------------------------------------------
 extern Parameter pwmValue;
-extern ParameterFlt pwmDeathTime;
+//extern ParameterFlt pwmDeathTime;
 
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ...

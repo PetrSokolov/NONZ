@@ -121,7 +121,7 @@ void RCC_Configuration(void)
 //---------------------------------------------------------------------------------------------------------
 // Инициализация объектов
 //---------------------------------------------------------------------------------------------------------
-	mapsOfParameters.init();
+//	mapsOfParameters.init();
   adc_1.Init();
 	adc_3.Init();
 	UART_1.Init();
@@ -153,7 +153,7 @@ parameterPointer = mapsOfParameters.GetIdParameter(2);
 parameterPointer = mapsOfParameters.GetIdParameter(3);
  tmp32_1 = parameterPointer->GetValue();
 */
-
+/*
 tmp32_256 = mapsOfParameters.getMbValue(256);
 tmp32_257 = mapsOfParameters.getMbValue(257);
 tmp32_258 = mapsOfParameters.getMbValue(258);
@@ -173,7 +173,7 @@ tmp32_3 = mapsOfParameters.getIdValue(3);
 tmp32_4 = mapsOfParameters.getIdValue(4);
 tmp32_5 = mapsOfParameters.getIdValue(5);
 tmp32_6 = mapsOfParameters.getIdValue(6);
-
+*/
 /*
 tmp32_1 = calibratedParameter.getValue();
 calibratedParameter.setCalibrating();
@@ -184,10 +184,10 @@ tmp32_2 = calibratedParameter.getEditingValue();
 tmp32_3 = calibratedParameter.getValue();
 */
 
-/*vector<IMenuItem*> result_vect;
+//vector<MenuItem*> result_vect;
 
 menuEngine.setMenuValue("A");
-menuEngine.getAvailableElements(result_vect, "A.");
+menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
   
 //  for (i=0; i<size; i++){
@@ -196,16 +196,18 @@ menuEngine.getAvailableElements(result_vect, "A.");
 //    printf("text = %s \n", _availableElements[i]->getText() );
 //  }
 
-//menuEngine.setMenuValue("B.2");
-menuEngine.getAvailableElements(result_vect, "B.");
+menuEngine.setMenuValue("B.1");
+menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
 
-menuEngine.getAvailableElements(result_vect, "B.1");
+menuEngine.setMenuValue("B.2");
+menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
 
-menuEngine.getAvailableElements(result_vect, "B.1");
+menuEngine.setMenuValue("B.");
+menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
-*/  
+  
 
   pwm.setValue (0.2);
   pwm.setValue (0.4);

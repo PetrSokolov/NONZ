@@ -14,6 +14,7 @@
 #include "stdint.h"
 #include <stdio.h>
 #include <vector>
+
 //#include "__MapsOfParameters.h"
 
 
@@ -21,6 +22,8 @@
  extern "C" {
 #endif 
 
+using namespace std;
+   
 namespace src{	 
 
 class CTmp{
@@ -28,18 +31,14 @@ class CTmp{
     int c;
 }; 
 
-//========================================================================================================
-//                                   Интерфейс IMenuItem
-//========================================================================================================
-class IMenuItem{
-  public:
-    virtual inline uint16_t getId     (void) { return 0; }       // Возвращает id параметра
-    virtual inline char*    getMenu   (void) { return 0; }       // Возвращает указатель на индекс меню
-    virtual inline char*    getText   (void) { return 0; }       // Возвращает указатель на текст меню
 
-     uint16_t  _id;        // Идентификатор параметра. Для привязки к FRAM
-     char*     _menu;      // Идентификатор меню.
-     char*     _text;      // Тестовая информация
+//========================================================================================================
+//                                   Интерфейс IMenuEngine
+//========================================================================================================
+class MenuItem;
+class IMenuEngine{
+  public:
+    virtual void  putToMenu   (MenuItem* menuItem)=0;
 };
 
 
@@ -49,31 +48,33 @@ class IMenuItem{
   //  Осуществляет навингацию по объектам IMenuItem
   //  Агрегирует объект, содержащий карты параметров. (Потом убрать)
   //===========================================================================================
-  
-class MenuEngine{
+  class MenuEngine : public IMenuEngine {
 	public:
     // Конструктор с параметрами
 //    MenuEngine(MapsOfParameters* mapsOfParameters)  { _mapsOfParameters = mapsOfParameters; }
     // Конструктор без параметров
     MenuEngine()  {}
   
-    void          putToMenu (IMenuItem* menuItem);    // Положить указатель на объект в вектор, содержащий все элементы меню
-    void          getAvailableElements(vector<IMenuItem*> &resultVector, char* indexString); // Производит поиск доступных элементов меню на данном уровне меню
+    virtual void  putToMenu   (MenuItem* menuItem);   // Возвращает указатель на текст меню
+    void          findAvailableElements(vector<MenuItem*> &resultVector, char* indexString); // Производит поиск доступных элементов меню на данном уровне меню
+    void          findAvailableElements(char* indexString);                                  // Производит поиск доступных элементов меню на данном уровне меню
     uint16_t      getCountOfAvailableElements(void);  // Возвращает количество элементов на данном уровне
-    IMenuItem*    getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
+    MenuItem*     getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
     inline void   setMenuValue(char* m) { _m = m; }   // Устанавливает текущий уровень (сигнатуру) меню
     inline char*  getMenuValue(void)    { return _m; }// Возвращает текущий уровень (сигнатуру) меню
 
 	protected:
 //    MapsOfParameters*   _mapsOfParameters;            // Агрегация объекта, содержащего карты
-    vector<IMenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
-    vector<IMenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
-		char*               _m;	                          // Состояние автомата меню
-		int				          _im;                   	      // Индекс листига текущего меню
-
+    vector<MenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
+    vector<MenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
+		char*              _m;	                          // Состояние автомата меню
+//		int				          _im;                   	      // Индекс листига текущего меню
 };
-	
+
 }	// namespace src
+
+extern src::MenuEngine menuEngine;
+
 #ifdef __cplusplus
 }
 #endif
