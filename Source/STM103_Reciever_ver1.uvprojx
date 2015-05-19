@@ -506,6 +506,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>RTC</GroupName>
+          <Files>
+            <File>
+              <FileName>RTC.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\_RTC\RTC.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
@@ -536,6 +546,12 @@
           <targetInfo name="NONZ"/>
         </targetInfos>
       </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="BKP" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
+        <targetInfos>
+          <targetInfo name="NONZ"/>
+        </targetInfos>
+      </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DMA" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH RCC">
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos>
@@ -560,7 +576,19 @@
           <targetInfo name="NONZ"/>
         </targetInfos>
       </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="PWR" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH RCC">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
+        <targetInfos>
+          <targetInfo name="NONZ"/>
+        </targetInfos>
+      </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RCC" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
+        <targetInfos>
+          <targetInfo name="NONZ"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RTC" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH">
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos>
           <targetInfo name="NONZ"/>

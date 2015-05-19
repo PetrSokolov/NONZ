@@ -9,33 +9,61 @@
 //#####################################################################################
 
 //#include "..\Menu_Items\_Engine.h"
+
+#include "stm32f10x.h"
 #include "_Engine.h"
-#include <vector>
-#include <stdio.h>
 
 using namespace src;
 
 
-
-//=====================================================================================
-// Метод getAvailableElements
-// Производит поиск доступных элементов меню на данном уровне
-//=====================================================================================
-void MenuEngine::findAvailableElements()
+/*
+//--------------------------------------------------------------------------------------------------------
+// Метод PutToMenu
+// Положить указатель на объект в вектор, содержащий все элементы меню
+//--------------------------------------------------------------------------------------------------------
+void  MenuEngine::putToMenu (IMenuItem* menuItem) // Положить ссылку на объект в карты  
 {
-  uint16_t size, i;
-  printf("Method findAvailableElements \n");
-  printf("vector = %d \n", _availableElements.size() );
-  
-  _availableElements = _mapsOfParameters->findIndexMenuItems(getMenuValue());
-  
-  size = _availableElements.size();
-  printf("After find %s. IMeniItem items in vector = %d \n", getMenuValue(), size );
-  
-  for (i=0; i<size; i++){
-    printf("find Item id= %d  ,", _availableElements[i]->getId() );
-    printf("menu = %s  ,", _availableElements[i]->getMenu() );
-    printf("text = %s \n", _availableElements[i]->getText() );
+//  _menuIdVector.push_back( meniItem );
+}
+
+
+//=============================================================================================
+// Метод findAvailableElements
+// Производит поиск доступных элементов меню на данном уровне меню
+//=============================================================================================
+//findIndexMenuItems (vector<IMenuItem*> &resultVector, char* indexString)
+void MenuEngine::getAvailableElements(vector<IMenuItem*> &resultVector, char* indexString)
+{
+  uint16_t i, n;
+
+  resultVector.clear();
+  n = _menuIdVector.size();
+
+  for (i=0; i < n; i++){
+    if(strstr (_menuIdVector[i]->getMenu(),indexString))  // Символ найден
+    {
+      resultVector.push_back(_menuIdVector[i]);
+    }
   }
 }
 
+
+//=============================================================================================
+// Метод getCountOfAvailableElements
+// Возвращает количество элементов на данном уровне
+//=============================================================================================
+uint16_t MenuEngine::getCountOfAvailableElements(void)
+{
+  return _availableElements.size();
+}
+
+
+//=============================================================================================
+// Метод getAvailableElement
+// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
+//=============================================================================================
+IMenuItem*  MenuEngine::getAvailableElement(uint16_t index)
+{
+ return _availableElements[index];
+}
+*/

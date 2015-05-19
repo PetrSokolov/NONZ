@@ -12,7 +12,10 @@
 #define PARAMETERS_USER_H
 
 #include "stdint.h"
-#include "_Parameters.h"
+//#include "_Parameters.h"
+//#include "_Engine.h"
+#include "__MapsOfParameters.h"
+
 
 
 #ifdef __cplusplus
@@ -21,8 +24,9 @@
 
 using namespace src;
 
+  extern CTmp cTmp;
   extern  MapsOfParameters mapsOfParameters;
-  extern Parameter par1, par2;
+  extern  MenuEngine menuEngine;
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ШИМ
 //-----------------------------------------------------------------------------------------------------------
@@ -33,9 +37,11 @@ extern ParameterFlt pwmDeathTime;
 // Параметры настройки ...
 //-----------------------------------------------------------------------------------------------------------
 
-extern Parameter2reg par3;
-extern DecoratorCalibrated calibratedParameter;
-   
+//extern Parameter2reg par3;
+//extern DecoratorCalibrated calibratedParameter;
+
+extern Parameter par1, par2;
+  
 // }	// namespace src
 
 #ifdef __cplusplus

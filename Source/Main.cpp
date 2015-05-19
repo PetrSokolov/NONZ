@@ -3,9 +3,10 @@
 #include "Main.hpp"
 #include ".\_ADC\_ADC.hpp"
 #include ".\_UART\_UART.h"
+#include ".\_RTC\__RTC.h"
 #include ".\_AnalogSensors\_AnalogSensors.h"
 #include "_PWM\_PWM.h"
-#include ".\Menu_Items\_Engine.h"
+//#include ".\Menu_Items\_Engine.h"
 #include ".\Menu_Items\_Parameters.h"
 #include ".\Menu_Items\__Parameters_User.h"
 #include <vector>
@@ -33,7 +34,8 @@ AnalogRmsSensor		current		(0.00002, 0.050);//(ts, tf)
 AnalogRmsSensor		voltage		(0.00006, 0.001);//(ts, tf)
 AnalogRmsSensor		voltageRms(0.00006, 0.050);//(ts, tf)
 
-MenuEngine menuEngine( &mapsOfParameters );
+
+Rtc rtc;  // Таймер реального времени
 
 string str1 ("First string");
 string str2 ("Second string");
@@ -48,7 +50,7 @@ uint32_t tmp32_1, tmp32_2, tmp32_3, tmp32_4, tmp32_5, tmp32_6;
 uint32_t tmp32_256, tmp32_257, tmp32_258, tmp32_259, tmp32_260, tmp32_261, tmp32_262, tmp32_263;
 uint16_t tmp16_1, tmp16_2;
 Parameter* par_ptr;
-Parameter2reg* par32_ptr;
+//Parameter2reg* par32_ptr;
 
 
 //---------------------------------------------------------------------------------------------------------
@@ -124,6 +126,7 @@ void RCC_Configuration(void)
 	adc_3.Init();
 	UART_1.Init();
 	pwm.init();
+  rtc.init();
 	
 	current.SetCalibration(123);
 	voltage.SetCalibration(210);
@@ -181,22 +184,34 @@ tmp32_2 = calibratedParameter.getEditingValue();
 tmp32_3 = calibratedParameter.getValue();
 */
 
+/*vector<IMenuItem*> result_vect;
+
 menuEngine.setMenuValue("A");
-menuEngine.findAvailableElements();
+menuEngine.getAvailableElements(result_vect, "A.");
+  printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
+  
+//  for (i=0; i<size; i++){
+//    printf("find Item id= %d  ,", _availableElements[i]->getId() );
+//    printf("menu = %s  ,", _availableElements[i]->getMenu() );
+//    printf("text = %s \n", _availableElements[i]->getText() );
+//  }
 
-menuEngine.setMenuValue("B");
-menuEngine.findAvailableElements();
+//menuEngine.setMenuValue("B.2");
+menuEngine.getAvailableElements(result_vect, "B.");
+  printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
 
-menuEngine.setMenuValue("B.1");
-menuEngine.findAvailableElements();
+menuEngine.getAvailableElements(result_vect, "B.1");
+  printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
 
-menuEngine.setMenuValue("B.2");
-menuEngine.findAvailableElements();
+menuEngine.getAvailableElements(result_vect, "B.1");
+  printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
+*/  
 
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);
-	
+
+//tmp32_5 =0;
 	while (1)
  {
 	GPIOA->BSRR = 1;
@@ -204,6 +219,9 @@ menuEngine.findAvailableElements();
 	current.putSample(adc_1.getSample());
 	voltage.putSample(adc_1.getSample());
 	voltageRms.putSample(adc_1.getSample());
+//  tmp32_6 = RTC_GetDivider();
+//  if (tmp32_6>tmp32_5) 
+//  { tmp32_5 = tmp32_6; }
  }
 }
 

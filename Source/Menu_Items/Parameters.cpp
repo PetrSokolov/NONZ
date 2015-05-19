@@ -9,13 +9,14 @@
 //#####################################################################################
 
 #include "_Parameters.h"
-#include "__Parameters_User.h"
+//#include "__Parameters_User.h"
+//#include "_Engine.h"
 
-#include "stdint.h"
+//#include "stdint.h"
 #include <stdio.h>
-#include <map>
-#include <vector>
-#include <string>
+//#include <map>
+//#include <vector>
+//#include <string>
 #include <algorithm>
 
 
@@ -34,12 +35,12 @@ uint32_t  Parameter::editingValue;    // Статическая переменн
   GroupParameter::GroupParameter( uint16_t   id,
                     char*      menu,
                     char*      text,
-                    MapsOfParameters& mapsOfParameters
+                    MenuEngine& menuEngine
                   )
                    { _id = id;
                      _menu = menu;
                      _text = text;
-                     mapsOfParameters.putToMenu(this);
+//                     menuEngine.putToMenu(this);
                    }
 
 
@@ -60,7 +61,8 @@ Parameter::Parameter(  uint16_t   id,
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+                MenuEngine& menuEngine
                  )
                     { 
                       _id          = id;
@@ -76,7 +78,7 @@ Parameter::Parameter(  uint16_t   id,
                       _flags.type  = TYPE_SINGLE_REGISTER;
                       _flags.user  = user;
                       mapsOfParameters.putToMaps(this);
-                      mapsOfParameters.putToMenu(this);
+ //                     menuEngine.putToMenu(this);
                     }
 
 
@@ -112,10 +114,10 @@ Parameter::Parameter(  uint16_t   id,
 // Обработчик ввода при редактировании параметра
 // Определяется в файле Parameters_User.cpp
 //--------------------------------------------------------------------------------------------------------
-/*
-void Parameter::enterHandler (void)
-{
-}*/
+
+//void Parameter::enterHandler (void)
+//{
+//}
 
 //========================================================================================================
 //                                        Класс Parameter2reg
@@ -142,7 +144,8 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                 uint16_t   user,
                 uint16_t   def,
                 uint16_t   def2,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+                MenuEngine& menuEngine
                 ):
     Parameter(     id,
                    menu,
@@ -162,7 +165,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _max2 = max2;
                   _def2 = def2;
                   mapsOfParameters.putToMaps(this);
-                  mapsOfParameters.putToMenu(this);
+                  menuEngine.putToMenu(this);
                 }
 
 
@@ -221,7 +224,8 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+                MenuEngine& menuEngine
                 ):
     Parameter(     id,
                    menu,
@@ -237,7 +241,7 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
                   mapsOfParameters.putToMaps(this);
-                  mapsOfParameters.putToMenu(this);
+                  menuEngine.putToMenu(this);
                 }
                 
 
@@ -279,10 +283,10 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
 //========================================================================================================
  
   // Конструктор с параметрами
- DecoratorCalibrated::DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter ) : Decorator( parameter )
+ DecoratorCalibrated::DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, MenuEngine& menuEngine, Parameter* parameter ) : Decorator( parameter )
   {
     mapsOfParameters.putToMaps(this);
-    mapsOfParameters.putToMenu(this);
+    menuEngine.putToMenu(this);
   }
 
 

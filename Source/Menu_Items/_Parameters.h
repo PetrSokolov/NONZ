@@ -16,7 +16,9 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "__MapsOfParameters.h"
+//#include "__MapsOfParameters.h"
+//#include "__Parameters_User.h"
+#include "_Engine.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -36,28 +38,30 @@ enum {
   TYPE_DOUBLE_REGISTER,
   TYPE_FLOAT
 };
-  
+ 
+//class MapsOfParameters;
+
 //=================================================================================================
 //  Класс, определяющий группу настроечных параметров
 //  Пустой элемент меню, работает только на отображение
 //=================================================================================================
-class GroupParameter : public IMeniItem{
+class GroupParameter : public IMenuItem{
   public:
       // Конструктор с параметрами    
     GroupParameter( uint16_t   id,
                     char*      menu,
                     char*      text,
-                    MapsOfParameters& mapsOfParameters
+                    MenuEngine& menuEngine
                   );
 
-    // Переопределение методов интерфейса  IMeniItem
+    // Переопределение методов интерфейса  IMenuItem
     virtual inline uint16_t getId     (void)           { return _id; }         // Возвращает id параметра
     virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
     virtual inline char*    getText   (void)           { return _text; }       // Возвращает указатель на текст меню
 };
  
 // Класс настроечного параметра. В ПЗУ хранится только текст (const char*)
-class Parameter : public IMeniItem{
+class Parameter : public IMenuItem{
   public:
     // Конструктор без параметров
     Parameter() { }
@@ -73,7 +77,8 @@ class Parameter : public IMeniItem{
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+				MenuEngine& menuEngine
              );
 
    // Конструктор с параметрами. Без записи в карты
@@ -106,7 +111,7 @@ class Parameter : public IMeniItem{
   virtual inline uint32_t getMin    (void)           { return _min; }        // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _max; }        // Возвращает максимальное значение параметра
 
-  // Переопределение методов интерфейса  IMeniItem
+  // Переопределение методов интерфейса  IMenuItem
     virtual inline uint16_t getId     (void)           { return _id; }         // Возвращает id параметра
     virtual inline char*    getMenu   (void)           { return _menu; }       // Возвращает указатель на индекс меню
     virtual inline char*    getText   (void)           { return _text; }       // Возвращает указатель на текст меню
@@ -215,7 +220,8 @@ public:
                 uint16_t   user,
                 uint16_t   def,
                 uint16_t   def2,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+				MenuEngine& menuEngine
                 );
 
    // Конструктор с параметрами. Без записи в карты
@@ -288,7 +294,8 @@ public:
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-                MapsOfParameters& mapsOfParameters
+                MapsOfParameters& mapsOfParameters,
+                MenuEngine& menuEngine
                 );
 
                 // Конструктор с параметрами. Без записи в карты
@@ -347,7 +354,7 @@ class DecoratorCalibrated : public Decorator {
 public:
 
   // Конструктор с параметрами
-  DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, Parameter* parameter );
+  DecoratorCalibrated ( MapsOfParameters& mapsOfParameters, MenuEngine& menuEngine, Parameter* parameter );
 
 // Переопределение методов под данный тип параметра
 
@@ -367,7 +374,7 @@ public:
   virtual inline uint32_t getMin    (void)           { return _parameter->getMin(); }      // Возвращает минимальное значение параметра
   virtual inline uint32_t getMax    (void)           { return _parameter->getMax(); }      // Возвращает максимальное значение параметра
 
-    // Методы интерфейса  IMeniItem
+    // Методы интерфейса  IMenuItem
   virtual inline uint16_t getId     (void)           { return _parameter->getId(); }         // Возвращает id параметра
   virtual inline char*    getMenu   (void)           { return _parameter->getMenu(); }       // Возвращает указатель на индекс меню
   virtual inline char*    getText   (void)           { return _parameter->getText(); }       // Возвращает указатель на текст меню

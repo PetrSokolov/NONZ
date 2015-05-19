@@ -50,7 +50,7 @@ void Parameter::enterHandler (void)
 //--------------------------------------------------------------------------------------------------------
 // Обработчик декремента при редактировании параметра
 //--------------------------------------------------------------------------------------------------------
-void DecoratorCalibrated::decValueHandler(uint16_t x, uint8_t power)
+/*void DecoratorCalibrated::decValueHandler(uint16_t x, uint8_t power)
 {
   _parameter->decValueHandler(x, power);
 }
@@ -80,6 +80,6 @@ void DecoratorCalibrated::enterHandler  (void)
    }
      
 }
-
+*/
 
 

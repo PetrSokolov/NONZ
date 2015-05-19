@@ -23,10 +23,12 @@
 using namespace std;
 namespace src{	
 
+
+/*
 //========================================================================================================
-//                                   Интерфейс IMeniItem
+//                                   Интерфейс IMenuItem
 //========================================================================================================
-class IMeniItem{
+class IMenuItem{
   public:
     virtual inline uint16_t getId     (void) { return 0; }       // Возвращает id параметра
     virtual inline char*    getMenu   (void) { return 0; }       // Возвращает указатель на индекс меню
@@ -36,18 +38,18 @@ class IMeniItem{
      char*     _menu;      // Идентификатор меню.
      char*     _text;      // Тестовая информация
 };
-
+*/
   
 //====================================================================================================
 //  Класс, определяющий организацию настроечных параметров и ModBus регистров. И работу с ними
 //  Содержит 2 объекта класса MAP. map[id / Parameter*] и сформированую по ней map[mbAdr / Parameter*]
 //  Метод PutToMaps прописывает объект-параметр в карты. И дальше все должно само работать.
 //====================================================================================================
-class Parameter;
+//class Parameter;
 class MapsOfParameters{
   public:
     void putToMaps (Parameter* parameter);      // Положить указатель на объект в карты параметров
-    void putToMenu (IMeniItem* meniItem);        // Положить указатель на объект в вектор элементов меню
+//    void putToMenu (IMenuItem* meniItem);        // Положить указатель на объект в вектор элементов меню
   // Методы атрибутов контейнеров
     uint16_t   mbMapSize      (void);           // Возвращает количество элементов в карте mbMap
     uint16_t   idMapSize      (void);           // Возвращает количество элементов в карте idMap
@@ -60,14 +62,14 @@ class MapsOfParameters{
 
   // Методы поиска в контейнерах
   // Поиск и формирования вектора из элементов меню, в которых содержится индекс меню indexString.
-    vector<IMeniItem*> findIndexMenuItems (char* indexString);
+    /*vector<IMenuItem*>*/ //void findIndexMenuItems (vector<IMenuItem*> &vec, char* indexString);
   
     void init();                                // Инициализация карт
 
   protected:
     map<uint16_t, Parameter*> _idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
     map<uint16_t, Parameter*> _mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
-	vector<IMeniItem*>        _menuIdVector;// Вектор элементов меню
+//	vector<IMenuItem*>        _menuIdVector;// Вектор элементов меню
 };  
   
 }
