@@ -12,9 +12,9 @@
 #define PARAMETERS_USER_H
 
 #include "stdint.h"
-//#include "_Parameters.h"
+#include "_Parameters.h"
 //#include "_Engine.h"
-#include "__MapsOfParameters.h"
+//#include "__MapsOfParameters.h"
 
 
 
@@ -24,14 +24,14 @@
 
 using namespace src;
 
-//  extern CTmp cTmp;
-//  extern  MapsOfParameters mapsOfParameters;
-//  extern  MenuEngine menuEngine;
+extern MapsOfParameters mapsOfParameters;
+extern MenuEngine menuEngine;
+   
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ШИМ
 //-----------------------------------------------------------------------------------------------------------
 extern Parameter pwmValue;
-//extern ParameterFlt pwmDeathTime;
+extern ParameterFlt pwmDeathTime;
 
 //-----------------------------------------------------------------------------------------------------------
 // Параметры настройки ...

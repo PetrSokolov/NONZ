@@ -10,19 +10,19 @@
 
 //#include "..\Menu_Items\_Engine.h"
 
-#include "stm32f10x.h"
+//#include "stm32f10x.h"
 #include "_Engine.h"
 #include "_Parameters.h"
 
 using namespace src;
 
 
-MenuEngine menuEngine;
+//MenuEngine menuEngine;
 //--------------------------------------------------------------------------------------------------------
 // Метод PutToMenu
 // Положить указатель на объект в вектор, содержащий все элементы меню
 //--------------------------------------------------------------------------------------------------------
-void  MenuEngine::putToMenu (MenuItem* menuItem) // Положить ссылку на объект в карты  
+void  MenuEngine::putToMenu (IMenuItem* menuItem) // Положить ссылку на объект в карты  
 {
   _menuIdVector.push_back( menuItem );
 }
@@ -33,17 +33,25 @@ void  MenuEngine::putToMenu (MenuItem* menuItem) // Положить ссылк�
 // Производит поиск доступных элементов меню на данном уровне меню
 //=============================================================================================
 //findIndexMenuItems (vector<IMenuItem*> &resultVector, char* indexString)
-void MenuEngine::findAvailableElements(vector<MenuItem*> &resultVector, char* indexString)
+void MenuEngine::findAvailableElements(vector<IMenuItem*> &resultVector, char* indexString)
 {
   uint16_t i, n;
+  uint16_t lenthIndexString;
+  char* string_found, *first_point, *last_point;
 
   resultVector.clear();
   n = _menuIdVector.size();
+  lenthIndexString = strlen(indexString);
 
   for (i=0; i < n; i++){
-    if(strstr (_menuIdVector[i]->getMenu(),indexString))  // Символ найден
-    {
-      resultVector.push_back(_menuIdVector[i]);
+    string_found = strstr (_menuIdVector[i]->getMenu(),indexString);
+    if(string_found){  // Символ найден
+      // Если после indexString есть точка, и она является последней, то это элемент текущего меню 
+      first_point = strchr((string_found + lenthIndexString),'.');
+      last_point = strrchr((string_found + lenthIndexString),'.');
+      if( first_point && (first_point == last_point) ){
+        resultVector.push_back(_menuIdVector[i]);
+      }
     }
   }
 }
@@ -55,17 +63,25 @@ void MenuEngine::findAvailableElements(vector<MenuItem*> &resultVector, char* in
 //=============================================================================================
 void MenuEngine::findAvailableElements(char* indexString)
 {
-  uint16_t i, n;
+/*  uint16_t i, n;
+  uint16_t lenthIndexString;
+  char* string_found;
 
   _availableElements.clear();
   n = _menuIdVector.size();
+  lenthIndexString = strlen(indexString);
 
   for (i=0; i < n; i++){
-    if(strstr (_menuIdVector[i]->getMenu(),indexString))  // Символ найден
+    string_found = strstr (_menuIdVector[i]->getMenu(),indexString);
+    if(string_found)  // Символ найден
     {
-      _availableElements.push_back(_menuIdVector[i]);
+      if( strchr((string_found + lenthIndexString),'.') == strrchr((string_found + lenthIndexString),'.') ){
+        _availableElements.push_back(_menuIdVector[i]);
+        printf("   element %s added\n", _menuIdVector[i]->getMenu());
+      }
     }
-  }
+  }*/
+  findAvailableElements(_availableElements, indexString);
 }
 
 //=============================================================================================
@@ -82,7 +98,7 @@ uint16_t MenuEngine::getCountOfAvailableElements(void)
 // Метод getAvailableElement
 // Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
 //=============================================================================================
-MenuItem*  MenuEngine::getAvailableElement(uint16_t index)
+IMenuItem*  MenuEngine::getAvailableElement(uint16_t index)
 {
  return _availableElements[index];
 }

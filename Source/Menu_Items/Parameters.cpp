@@ -9,7 +9,7 @@
 //#####################################################################################
 
 #include "_Parameters.h"
-//#include "__Parameters_User.h"
+//#include "__MapsOfParameters.h"
 //#include "_Engine.h"
 
 //#include "stdint.h"
@@ -60,7 +60,7 @@ Parameter::Parameter(  uint16_t   id,
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
-//                MapsOfParameters& mapsOfParameters,
+                MapsOfParameters& mapsOfParameters,
                 MenuEngine& menuEngine
                  )
                     { 
@@ -76,8 +76,8 @@ Parameter::Parameter(  uint16_t   id,
                       _flags.rw    = rw;
                       _flags.type  = TYPE_SINGLE_REGISTER;
                       _flags.user  = user;
-//                      mapsOfParameters.putToMaps(this);
                       menuEngine.putToMenu(this);
+                      mapsOfParameters.putToMaps(this);
                     }
 
 
@@ -143,7 +143,7 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                 uint16_t   user,
                 uint16_t   def,
                 uint16_t   def2,
-//                MapsOfParameters& mapsOfParameters,
+                MapsOfParameters& mapsOfParameters,
                 MenuEngine& menuEngine
                 ):
     Parameter(     id,
@@ -163,8 +163,8 @@ Parameter2reg::Parameter2reg(  uint16_t   id,
                   _min2 = min2;
                   _max2 = max2;
                   _def2 = def2;
-  //                mapsOfParameters.putToMaps(this);
                   menuEngine.putToMenu(this);
+                  mapsOfParameters.putToMaps(this);
                 }
 
 
@@ -223,7 +223,7 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 uint16_t   max,
                 uint16_t   user,
                 uint16_t   def,
- //               MapsOfParameters& mapsOfParameters,
+                MapsOfParameters& mapsOfParameters,
                 MenuEngine& menuEngine
                 ):
     Parameter(     id,
@@ -239,7 +239,7 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
                 )
                 { _flags.type = TYPE_FLOAT;
                   _power = power;
- //                 mapsOfParameters.putToMaps(this);
+                  mapsOfParameters.putToMaps(this);
                   menuEngine.putToMenu(this);
                 }
                 
@@ -282,9 +282,11 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
 //========================================================================================================
  
   // Конструктор с параметрами
- DecoratorCalibrated::DecoratorCalibrated ( /*MapsOfParameters& mapsOfParameters,*/ MenuEngine& menuEngine, Parameter* parameter ) : Decorator( parameter )
+ DecoratorCalibrated::DecoratorCalibrated ( MapsOfParameters& mapsOfParameters,
+                                            MenuEngine& menuEngine,
+                                            Parameter* parameter ) : Decorator( parameter )
   {
-//    mapsOfParameters.putToMaps(this);
+    mapsOfParameters.putToMaps(this);
     menuEngine.putToMenu(this);
   }
 

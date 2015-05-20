@@ -97,7 +97,7 @@ void Pwm2phaseNONZ::init (void)
   
 
   // Инизиализация указателей на настроечные параметры
-//  _deathTime = &pwmDeathTime;     //  Указатель на настроечный параметр. death time[мкс]
+  _deathTime = &pwmDeathTime;     //  Указатель на настроечный параметр. death time[мкс]
   _value     = &pwmValue;         //  Указатель на настроечный параметр. Амплитуда [%]
   
   
@@ -194,7 +194,7 @@ void Pwm2phaseNONZ::init (void)
 	TIM_BDTRInitStructure.TIM_OSSRState				= TIM_OSSRState_Enable;
 	TIM_BDTRInitStructure.TIM_OSSIState				= TIM_OSSIState_Enable;
 	TIM_BDTRInitStructure.TIM_LOCKLevel				= TIM_LOCKLevel_1;
-	TIM_BDTRInitStructure.TIM_DeadTime				= 11;//computeDeathTime(_deathTime->getValueFlt());
+	TIM_BDTRInitStructure.TIM_DeadTime				= computeDeathTime(_deathTime->getValueFlt());
 	TIM_BDTRInitStructure.TIM_Break						= TIM_Break_Disable;//TIM_Break_Enable;
 	TIM_BDTRInitStructure.TIM_BreakPolarity		= TIM_BreakPolarity_High;
 	TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;

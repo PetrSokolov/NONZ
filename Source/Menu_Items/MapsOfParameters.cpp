@@ -9,22 +9,20 @@
 // 	-----|-------------|----------------|----------------------------------------------
 //#####################################################################################
 
-//#include "_Parameters.h"
 #include "__Parameters_User.h"
 #include "__MapsOfParameters.h"
-
-//#include "stdint.h"
-#include <stdio.h>
-#include <map>
-#include <vector>
-#include <string>
-#include <algorithm>
-
 #include "_Parameters.h"
 
-using namespace src;
-using namespace std;
+//#include "stdint.h"
+//#include <stdio.h>
+//#include <map>
+//#include <vector>
+//#include <string>
+//#include <algorithm>
 
+using namespace src;
+
+//MapsOfParameters mapsOfParameters;
 
 //========================================================================================================
 //                                        Класс MapsOfParameters
@@ -46,7 +44,7 @@ void  MapsOfParameters::putToMaps (Parameter* parameter) // Положить с�
   }
 }
 
-/*
+
 //--------------------------------------------------------------------------------------------------------
 // Метод mbMapsSize
 // Возвращает количество элементов в карте mbMap
@@ -156,46 +154,14 @@ uint32_t  MapsOfParameters::getIdValue     (uint16_t id)
 }
 
 
-
-//--------------------------------------------------------------------------------------------------------
-// Методы поиска в контейнерах
-// Ищет элементы, содержащие индекс меню index (пока так)
-//--------------------------------------------------------------------------------------------------------
-
-// Метод поиска элементов меню (параметров) по индексу. Формирует вектор с указателями на параметры-объекты, удовлетворяющие заданному уровню меню (indexString)
-void MapsOfParameters::findIndexMenuItems (vector<IMenuItem*> &resultVector, char* indexString)
-{
-//  char* stringPosition;
-  uint16_t i, n;
-//  vector<IMenuItem*> elements;
-
-  resultVector.clear();
-//  n = _menuIdVector.size();
-
-  for (i=0; i < n; i++){
-
-//    stringPosition = strstr (_menuIdVector[i]->getMenu(),indexString);
-    if(strstr (_menuIdVector[i]->getMenu(),indexString))  // Символ найден
-    {
-      resultVector.push_back(_menuIdVector[i]);
-//      printf("find element with B.1, id = %d, position = %#X \n", _menuIdVector[i]->getId(), (unsigned int)stringPosition);
-    }
-//    printf("\n");
-  }
-
-//  printf("After find. IMenuItem elements = %d \n", elements.size() );
-//  return elements;
-}
-
-
 //--------------------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------------------
 void MapsOfParameters::init()
 {
   // Инициализация параметров (сделать из FRAM)
-//  pwmValue.setValue(12);
-//  pwmDeathTime.setValue(12);
+  pwmValue.setValue(12);
+  pwmDeathTime.setValue(12);
 
-}*/
+}
 

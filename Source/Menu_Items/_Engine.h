@@ -14,8 +14,7 @@
 #include "stdint.h"
 #include <stdio.h>
 #include <vector>
-
-//#include "__MapsOfParameters.h"
+#include <map>
 
 
 #ifdef __cplusplus
@@ -26,20 +25,15 @@ using namespace std;
    
 namespace src{	 
 
-class CTmp{
-  public:
-    int c;
-}; 
-
 
 //========================================================================================================
 //                                   Интерфейс IMenuEngine
 //========================================================================================================
-class MenuItem;
-class IMenuEngine{
+class IMenuItem;
+/*class IMenuEngine{
   public:
-    virtual void  putToMenu   (MenuItem* menuItem)=0;
-};
+    virtual void  putToMenu   (IMenuItem* menuItem)=0;
+};*/
 
 
 
@@ -48,32 +42,29 @@ class IMenuEngine{
   //  Осуществляет навингацию по объектам IMenuItem
   //  Агрегирует объект, содержащий карты параметров. (Потом убрать)
   //===========================================================================================
-  class MenuEngine : public IMenuEngine {
+  class MenuEngine /*: public IMenuEngine*/ {
 	public:
-    // Конструктор с параметрами
-//    MenuEngine(MapsOfParameters* mapsOfParameters)  { _mapsOfParameters = mapsOfParameters; }
     // Конструктор без параметров
     MenuEngine()  {}
   
-    virtual void  putToMenu   (MenuItem* menuItem);   // Возвращает указатель на текст меню
-    void          findAvailableElements(vector<MenuItem*> &resultVector, char* indexString); // Производит поиск доступных элементов меню на данном уровне меню
+    void          putToMenu   (IMenuItem* menuItem);   // Возвращает указатель на текст меню
+    void          findAvailableElements(vector<IMenuItem*> &resultVector, char* indexString); // Производит поиск доступных элементов меню на данном уровне меню
     void          findAvailableElements(char* indexString);                                  // Производит поиск доступных элементов меню на данном уровне меню
     uint16_t      getCountOfAvailableElements(void);  // Возвращает количество элементов на данном уровне
-    MenuItem*     getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
+    IMenuItem*     getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
     inline void   setMenuValue(char* m) { _m = m; }   // Устанавливает текущий уровень (сигнатуру) меню
     inline char*  getMenuValue(void)    { return _m; }// Возвращает текущий уровень (сигнатуру) меню
 
 	protected:
-//    MapsOfParameters*   _mapsOfParameters;            // Агрегация объекта, содержащего карты
-    vector<MenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
-    vector<MenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
-		char*              _m;	                          // Состояние автомата меню
+    vector<IMenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
+    vector<IMenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
+		char*               _m;	                          // Состояние автомата меню
 //		int				          _im;                   	      // Индекс листига текущего меню
 };
 
 }	// namespace src
 
-extern src::MenuEngine menuEngine;
+//extern src::MenuEngine menuEngine;
 
 #ifdef __cplusplus
 }

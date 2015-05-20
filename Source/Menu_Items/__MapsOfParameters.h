@@ -13,6 +13,8 @@
 #define MAPSOFPARAMETERS_USER_H
 
 #include "stdint.h"
+#include <stdio.h>
+#include <vector>
 #include <map>
 
 
@@ -30,24 +32,27 @@ namespace src{
 //                                   Интерфейс IMapsOfParameters
 //========================================================================================================
 class Parameter;
-class IMapsOfParameters{
+//class IMenuItem;
+/*class IMapsOfParameters{
   public:
     virtual void  putToMaps   (Parameter* parameter)=0;
-};
+};*/
 
-  
+
 //====================================================================================================
 //  Класс, определяющий организацию настроечных параметров и ModBus регистров. И работу с ними
 //  Содержит 2 объекта класса MAP. map[id / Parameter*] и сформированую по ней map[mbAdr / Parameter*]
 //  Метод PutToMaps прописывает объект-параметр в карты. И дальше все должно само работать.
 //====================================================================================================
-class MapsOfParameters : public IMapsOfParameters{
+class MapsOfParameters /*: public IMapsOfParameters*/{
   public:
+    
+    MapsOfParameters() {}
 
-    virtual void putToMaps (Parameter* parameter); // Положить указатель на объект в карты параметров
+    void putToMaps (Parameter* parameter); // Положить указатель на объект в карты параметров
 
   // Методы атрибутов контейнеров
-/*    uint16_t   mbMapSize      (void);           // Возвращает количество элементов в карте mbMap
+    uint16_t   mbMapSize      (void);           // Возвращает количество элементов в карте mbMap
     uint16_t   idMapSize      (void);           // Возвращает количество элементов в карте idMap
 
   // Методы значений контейнеров
@@ -57,11 +62,9 @@ class MapsOfParameters : public IMapsOfParameters{
     uint32_t   getIdValue     (uint16_t id);    // По идентификатору ID возвращает значение параметра
 
   // Методы поиска в контейнерах
-  // Поиск и формирования вектора из элементов меню, в которых содержится индекс меню indexString.
-   // vector<IMenuItem*> //void findIndexMenuItems (vector<IMenuItem*> &vec, char* indexString);
   
-    void init();                                // Инициализация карт
-*/
+  void init();                                // Инициализация объектов в картах
+
   protected:
     map<uint16_t, Parameter*> _idMap;       // Карта ассоциаций  id параметров    [id    / Parameter*]
     map<uint16_t, Parameter*> _mbMap;       // Карта ассоциаций  ModBus регистров [mbAdr / Parameter*]
@@ -69,6 +72,8 @@ class MapsOfParameters : public IMapsOfParameters{
   
 }
    
+//extern src::MapsOfParameters mapsOfParameters;
+
 #ifdef __cplusplus
 };
 #endif

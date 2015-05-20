@@ -184,34 +184,64 @@ tmp32_2 = calibratedParameter.getEditingValue();
 tmp32_3 = calibratedParameter.getValue();
 */
 
-//vector<MenuItem*> result_vect;
+
+uint16_t i, size;
 
 menuEngine.setMenuValue("A");
 menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
-  
-//  for (i=0; i<size; i++){
-//    printf("find Item id= %d  ,", _availableElements[i]->getId() );
-//    printf("menu = %s  ,", _availableElements[i]->getMenu() );
-//    printf("text = %s \n", _availableElements[i]->getText() );
-//  }
+size = menuEngine.getCountOfAvailableElements();
+if (size)
+{
+  for (i=0; i<size; i++){
+    printf("find Item id= %d  ,", menuEngine.getAvailableElement(i)->getId() );
+    printf("menu = %s  \n", menuEngine.getAvailableElement(i)->getMenu() );
+  }
+}
+printf("\n");
 
 menuEngine.setMenuValue("B.1");
 menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
+size = menuEngine.getCountOfAvailableElements();
+if (size)
+{
+  for (i=0; i<size; i++){
+    printf("find Item id= %d  ,", menuEngine.getAvailableElement(i)->getId() );
+    printf("menu = %s  \n", menuEngine.getAvailableElement(i)->getMenu() );
+  }
+}
+printf("\n");
 
 menuEngine.setMenuValue("B.2");
 menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
+size = menuEngine.getCountOfAvailableElements();
+if (size)
+{
+  for (i=0; i<size; i++){
+    printf("find Item id= %d  ,", menuEngine.getAvailableElement(i)->getId() );
+    printf("menu = %s  \n", menuEngine.getAvailableElement(i)->getMenu() );
+  }
+}
+printf("\n");
 
-menuEngine.setMenuValue("B.");
+menuEngine.setMenuValue("B");
 menuEngine.findAvailableElements(menuEngine.getMenuValue());
   printf("After find %s  items in vector = %d \n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements() );
+size = menuEngine.getCountOfAvailableElements();
+if (size)
+{
+  for (i=0; i<size; i++){
+    printf("  find Item id= %d  ,", menuEngine.getAvailableElement(i)->getId() );
+    printf("menu = %s  \n", menuEngine.getAvailableElement(i)->getMenu() );
+  }
+}
   
-
   pwm.setValue (0.2);
   pwm.setValue (0.4);
   pwm.setValue (0.6);
+  
 
 //tmp32_5 =0;
 	while (1)
