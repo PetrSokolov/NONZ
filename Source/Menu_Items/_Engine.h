@@ -16,6 +16,8 @@
 #include <vector>
 #include <map>
 
+#include "__IControlCommands.h"
+
 
 #ifdef __cplusplus
  extern "C" {
@@ -30,36 +32,40 @@ namespace src{
 //                                   Интерфейс IMenuEngine
 //========================================================================================================
 class IMenuItem;
-/*class IMenuEngine{
-  public:
-    virtual void  putToMenu   (IMenuItem* menuItem)=0;
-};*/
-
-
 
   //===========================================================================================
   //  Движок меню. 
   //  Осуществляет навингацию по объектам IMenuItem
   //  Агрегирует объект, содержащий карты параметров. (Потом убрать)
   //===========================================================================================
-  class MenuEngine /*: public IMenuEngine*/ {
+  class MenuEngine {
 	public:
     // Конструктор без параметров
     MenuEngine()  {}
   
-    void          putToMenu   (IMenuItem* menuItem);   // Возвращает указатель на текст меню
-    void          findAvailableElements(vector<IMenuItem*> &resultVector, char* indexString); // Производит поиск доступных элементов меню на данном уровне меню
+    // Методы работы с элементами меню
+    void          putToMenu   (IMenuItem* menuItem);    // Положить в карту элемент
+    void          findAvailableElements(vector<IMenuItem*> &resultVector, char* indexString);// Производит поиск доступных элементов меню на данном уровне меню
     void          findAvailableElements(char* indexString);                                  // Производит поиск доступных элементов меню на данном уровне меню
-    uint16_t      getCountOfAvailableElements(void);  // Возвращает количество элементов на данном уровне
+    uint16_t      getCountOfAvailableElements(void);   // Возвращает количество элементов на данном уровне
     IMenuItem*     getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
-    inline void   setMenuValue(char* m) { _m = m; }   // Устанавливает текущий уровень (сигнатуру) меню
-    inline char*  getMenuValue(void)    { return _m; }// Возвращает текущий уровень (сигнатуру) меню
+    inline void   setMenuValue(char* m) { _m = m; }    // Устанавливает текущий уровень (сигнатуру) меню
+    inline char*  getMenuValue(void)    { return _m; } // Возвращает текущий уровень (сигнатуру) меню
 
+    // Методы навигации по элементам меню
+    inline void     setIm (uint16_t im) { _im = im; }
+    inline uint16_t getIm (void)        { return _im; }
+           void     menuMoveDown (void);
+           void     menuMoveUp (void);
+           void     menuMoveForward (void);
+           void     menuMoveBackward (void);
+    
+  
 	protected:
     vector<IMenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
     vector<IMenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
-		char*               _m;	                          // Состояние автомата меню
-//		int				          _im;                   	      // Индекс листига текущего меню
+		char*               _m;	                          // Текущее состояние (уровень) меню
+		uint16_t            _im;                   	      // Индекс листига текущего меню
 };
 
 }	// namespace src
