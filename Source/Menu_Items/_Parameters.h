@@ -392,16 +392,16 @@ public:
   virtual inline uint32_t getMax    (void)           { return _parameter->getMax(); }      // Возвращает максимальное значение параметра
 
     // Методы интерфейса  IMenuItem
-  virtual inline uint16_t getId     (void)           { return _parameter->getId(); }         // Возвращает id параметра
-  virtual inline char*    getMenu   (void)           { return _parameter->getMenu(); }       // Возвращает указатель на индекс меню
-  virtual inline char*    getText   (void)           { return _parameter->getText(); }       // Возвращает указатель на текст меню
+  virtual inline uint16_t getId     (void)           { return _parameter->getId(); }       // Возвращает id параметра
+  virtual inline char*    getMenu   (void)           { return _parameter->getMenu(); }     // Возвращает указатель на индекс меню
+  virtual inline char*    getText   (void)           { return _parameter->getText(); }     // Возвращает указатель на текст меню
 
   // Методы, используемые при редактировании параметра через меню
   virtual inline void startEditing  (void)           { _parameter->startEditing(); }       // Начало редактирования параметра
   virtual inline void endEditing    (void)           { _parameter->endEditing();   }       // Завершение редактирования параметра. С последующей командой на сохранение.
   virtual inline void exitEditing   (void)           { _parameter->exitEditing();  }       // Выход из редактирования параметра (без сохранения результата)
-  virtual 		 void incValueHandler(uint16_t x, uint8_t power);                          // Инкремент параметра
-  virtual 		 void decValueHandler(uint16_t x, uint8_t power);                          // Декремент параметра
+  virtual 		 void incValueHandler(uint16_t x, uint8_t power);                            // Инкремент параметра
+  virtual 		 void decValueHandler(uint16_t x, uint8_t power);                            // Декремент параметра
   virtual        void enterHandler  (void);                                                // Обработчик ввода при редактировании параметра
   virtual inline uint32_t getEditingValue(void)      { return _parameter->getEditingValue(); }// 
 
